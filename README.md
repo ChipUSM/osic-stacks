@@ -15,9 +15,11 @@ There are scripts provided for running the containers for each OS, this is becau
 
 ### Windows
 
-This script will run the container inside wsl and bind the enviroments variables for [wslg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md).
-
-```powershell -executionpolicy bypass -file .\scripts\wsl_start.ps1```
+Execute the next script in powershell.
+```pwsh
+iex "& { $(irm https://git.1159.cl/Mario1159/osic-stacks/raw/branch/main/scripts wsl_start.ps1) } Run Job"
+```
+ This script will run the container inside wsl and bind the enviroments variables for [wslg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md).
 
 ### Linux
 
