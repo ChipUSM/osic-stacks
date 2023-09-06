@@ -1,7 +1,24 @@
 param([switch] $remote = $false)
 
-$imagename = Read-Host -Prompt 'Container image to initialize'
-$containername = Read-Host -Prompt 'Container instance name [default=$imagename]'
+Write-Host "OSIC-Stacks Container Creation" -ForegroundColor Green
+Write-Host "Please select an image index:"
+
+$imageoptions = @(
+    'analog-xk'
+    'analog-xm'
+    'digital-ator'
+    'digital-icarus'
+    'heavy'
+)
+
+for($i = 0; $i -lt $imageoptions.Length; $i++) {
+    $imageoption = $imageoptions[$i]
+    Write-Host "$i - $imageoption" -ForegroundColor Cyan
+}
+
+$imageindex = Read-Host -Prompt "Container image to initialize [0-$($imageoptions.Length)]"
+$imagename = $imageoptions[$imageindex]
+$containername = Read-Host -Prompt "Container instance name [default=$imagename]"
 if (!$containername) { $containername = $imagename }
 
 if($remote) {
@@ -10,7 +27,9 @@ if($remote) {
     $image = $imagename
 }
 
-$command = ("docker run -d " +
+Write-Host ""
+
+$dockercommand = ("docker run -d " +
     "--name $containername " +
     "-v /tmp/.X11-unix:/tmp/.X11-unix " +
     "-v /mnt/wslg:/mnt/wsl " +
@@ -19,4 +38,11 @@ $command = ("docker run -d " +
     "-e XDG_RUNTIME_DIR=/mnt/wslg " +
     $image)
 
-wsl bash -ic $command
+wsl bash -ic $dockercommand
+
+if ($?) {
+    Write-Host "Container created successfully!" -ForegroundColor Green
+    Write-Host "Enter the container with `"docker exec -it $containername bash`"" -ForegroundColor DarkGray
+} else {
+    Write-Host "Container creation failed, see logs above" -ForegroundColor Red
+}
