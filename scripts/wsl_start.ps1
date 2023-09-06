@@ -1,6 +1,12 @@
 param([switch] $remote = $false)
 
 Write-Host "OSIC-Stacks Container Creation" -ForegroundColor Green
+Write-Host "Checking WSL updates" -ForegroundColor DarkGray
+
+Write-Host ""
+wsl --update
+Write-Host ""
+
 Write-Host "Please select an image index:"
 
 $imageoptions = @(
@@ -38,7 +44,7 @@ $dockercommand = ("docker run -d " +
     "-e XDG_RUNTIME_DIR=/mnt/wslg " +
     $image)
 
-wsl bash -ic $dockercommand
+wsl -d Ubuntu bash -ic $dockercommand
 
 if ($?) {
     Write-Host "Container created successfully!" -ForegroundColor Green
