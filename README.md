@@ -11,9 +11,12 @@
 
 ## Usage
 
-There are scripts provided for running the containers for each OS, this is because containers require binding the display enviroment variables to enable graphic output.
+Follow these 3 steps to get your container ready.
 
-### Starting a container with graphics output
+### 1. Starting a container with graphics output
+
+Scripts are provided for creating the containers in both Windows and Linux.
+These scripts automate the binding of graphics environment variables to the container in order to enable graphics inside the docker container.
 
 #### Windows
 
@@ -29,11 +32,23 @@ Execute the next script in your terminal. Make sure you have `curl` already inst
 curl https://git.1159.cl/Mario1159/osic-stacks/raw/branch/main/scripts/linux_start.sh -o linux_start.sh
 ```
 
-### Connecting to the container
-After starting the container enter to it executing a shell with docker.
+### 2. Connecting to the container
+After creating and starting the container, enter to it executing a shell with docker.
 ```sh
 docker exec -it <container_name> bash
 ```
+
+### 3. Configure Volare
+
+List the available PDKs and choose one to install.
+
+```sh
+volare ls-remote --pdk <sky130/gf180mcu>
+volare enable --pdk <sky130/gf180mcu> <version_id>
+```
+
+After you have set up the PDK, you can finally start developing your own designs!
+
 ## Build
 
 A singular stack image can be builded using docker in the following way.
