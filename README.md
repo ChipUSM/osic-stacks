@@ -13,8 +13,10 @@ include_toc: true
 
 - **analog-xk**: Analog workflow using XScheme & KLayout
 - **analog-xm**: Analog workflow using XScheme & Magic
+- **analog-heavy**: Workflow with all the analog tools
 - **digital-ator**: Digital workflow using Verilator & Yosys
 - **digital-icarus**: Digital workflow using Icarus & Yosys
+- **digital-heavy**: Workflow with all the digital tools
 - **heavy**: Workflow with all the previous tools 
 
 ## Usage
