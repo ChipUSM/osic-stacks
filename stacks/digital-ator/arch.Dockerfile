@@ -3,15 +3,13 @@
 FROM osicstack-base-arch
 
 # Update packages
-RUN pacman -Syuq --noconfirm
+RUN sudo pacman -Syuq --noconfirm
 
 # Install packages
-RUN aur-install verilator gtkwave base-devel cmake
+RUN sudo aur-install verilator gtkwave base-devel cmake
 
 # Clean cache
-RUN pacman -Scc
-
-USER designer
+RUN sudo pacman -Scc
 
 # Initialize the enviroment keeping container alive
 CMD ["sleep", "infinity"]
