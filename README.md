@@ -11,8 +11,8 @@ include_toc: true
 
 ## Stacks
 
-- **analog-xk**: Analog workflow using XScheme & KLayout
-- **analog-xm**: Analog workflow using XScheme & Magic
+- **analog-xk**: Analog workflow using XSchem & KLayout
+- **analog-xm**: Analog workflow using XSchem & Magic
 - **analog-heavy**: Workflow with all the analog tools
 - **digital-ator**: Digital workflow using Verilator & Yosys
 - **digital-icarus**: Digital workflow using Icarus & Yosys
