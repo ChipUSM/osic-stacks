@@ -2,13 +2,14 @@
 # Dev enviroment for analog circuits development using xschem and klayout.
 FROM osicstack-base-arch
 
+# Update packages
+RUN sudo pacman -Syuq --noconfirm
+
 # Install packages
-RUN aur-install xschem klayout
+RUN sudo aur-install xschem klayout
 
 # Clean cache
-RUN pacman -Scc
-
-USER designer
+RUN sudo pacman -Scc
 
 # Initialize the enviroment keeping container alive
 CMD ["sleep", "infinity"]
