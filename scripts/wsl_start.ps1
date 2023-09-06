@@ -1,9 +1,10 @@
 param([switch] $remote = $false)
 
 Write-Host "OSIC-Stacks Container Creation" -ForegroundColor Green
-Write-Host "Checking WSL updates" -ForegroundColor DarkGray
+Write-Host "Checking requirements and WSL updates" -ForegroundColor DarkGray
 
 Write-Host ""
+wsl --install Ubuntu --no-launch
 wsl --update
 Write-Host ""
 
