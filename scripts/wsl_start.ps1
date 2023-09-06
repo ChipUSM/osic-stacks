@@ -4,7 +4,7 @@ $imagename = Read-Host -Prompt 'Container image to initialize'
 $containername = Read-Host -Prompt 'Container instance name [default=$imagename]'
 if (!$containername) { $containername = $imagename }
 
-if($remote -eq "remote") {
+if($remote) {
     $image = "git.1159.cl/mario1159/$imagename"
 } else {
     $image = $imagename
