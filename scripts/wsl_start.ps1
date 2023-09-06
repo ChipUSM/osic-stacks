@@ -13,8 +13,10 @@ Write-Host "Please select an image index:"
 $imageoptions = @(
     'analog-xk'
     'analog-xm'
+    'analog-heavy'
     'digital-ator'
     'digital-icarus'
+    'digital-heavy'
     'heavy'
 )
 
@@ -23,7 +25,7 @@ for($i = 0; $i -lt $imageoptions.Length; $i++) {
     Write-Host "$i - $imageoption" -ForegroundColor Cyan
 }
 
-$imageindex = Read-Host -Prompt "Container image to initialize [0-$($imageoptions.Length)]"
+$imageindex = Read-Host -Prompt "Container image to initialize [0-$($imageoptions.Length-1)]"
 $imagename = $imageoptions[$imageindex]
 $containername = Read-Host -Prompt "Container instance name [default=$imagename]"
 if (!$containername) { $containername = $imagename }
