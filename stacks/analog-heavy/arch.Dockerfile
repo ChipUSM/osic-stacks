@@ -6,7 +6,7 @@ FROM osicstack-base-arch
 RUN sudo pacman -Syuq --noconfirm
 
 # Install packages
-RUN sudo aur-install xschem magic klayout
+RUN sudo aur-install xschem glu magic klayout
 
 # Clean cache
 RUN sudo pacman -Scc
