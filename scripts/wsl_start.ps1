@@ -1,4 +1,4 @@
-param($remote)
+param([switch] $remote = $false)
 
 $imagename = Read-Host -Prompt 'Container image to initialize'
 $containername = Read-Host -Prompt 'Container instance name [default=$imagename]'
