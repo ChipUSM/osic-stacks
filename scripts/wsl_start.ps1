@@ -54,7 +54,7 @@ if ($response -eq 'y') {
 
 Write-Host ""
 
-$dockercommand = ("docker run -d --pull always" +
+$dockercommand = ("docker run -d --pull always " +
     "--name $containername " +
     "-v /tmp/.X11-unix:/tmp/.X11-unix " +
     "-v /mnt/wslg:/mnt/wsl " +
