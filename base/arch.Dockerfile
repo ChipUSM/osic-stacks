@@ -6,7 +6,7 @@ FROM greyltc/archlinux-aur:paru
 RUN pacman -Syuq --noconfirm
 
 # Install packages
-RUN aur-install sudo git python python-pipx xz gnu-free-fonts
+RUN aur-install sudo git python python-pipx xz gnu-free-fonts vim
 
 # Clean cache
 RUN pacman -Scc
