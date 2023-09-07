@@ -37,10 +37,16 @@ Execute the next script in powershell.
  This script will run the container inside wsl and bind the enviroments variables for [wslg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md).
 
 #### Linux
-Execute the next script in your terminal. Make sure you have `curl` already installed.
+Execute the next script in your terminal replacing `<container_name>` and `<git.1159.cl/mario1159/image>`.
 ```sh
-curl https://git.1159.cl/Mario1159/osic-stacks/raw/branch/main/scripts/linux_start.sh -o linux_start.sh
+docker run -it --name <container_name> -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix <git.1159.cl/mario1159/image>
 ```
+
+> For Wayland compositors make sure you have XWayland installed
+
+#### macOS / OS X
+
+Install `Xquartz` and run the linux previous command.
 
 ### 2. Connecting to the container
 After creating and starting the container, enter to it executing a shell with docker.
