@@ -59,6 +59,7 @@ docker exec -it <container_name> bash
 List the available PDKs and choose one to install.
 
 ```sh
+export PDK=<sky130A/sky130B/gf180mcuA/gf180mcuB/gf180mcuC>
 volare ls-remote --pdk <sky130/gf180mcu>
 volare enable --pdk <sky130/gf180mcu> <version_id>
 ```
