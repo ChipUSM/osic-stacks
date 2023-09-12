@@ -8,4 +8,4 @@ if [[ $PDK = gf180mcu* ]]; then
 		mv $KLAYOUT_HOME/tech/gf180mcu.lym $KLAYOUT_HOME/pymacros
 	fi
 fi
-klayout $@
+/bin/klayout $@
