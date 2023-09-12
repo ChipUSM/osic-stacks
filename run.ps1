@@ -30,19 +30,21 @@ $imagename = $imageoptions[$imageindex]
 $containername = Read-Host -Prompt "Container instance name [default=$imagename]"
 if (!$containername) { $containername = $imagename }
 
+$additionaloptions = ''
 if($remote) {
     $image = "git.1159.cl/mario1159/$imagename"
+    $additionaloptions = '--pull always' 
 } else {
     $image = $imagename
 }
 
 $response = Read-Host "Do you want to bind the container home directory into a windows directory? [N/y]"
 
-$additionaloptions = ''
+
 if ($response -eq 'y') {
     $directory = Read-Host "Write the windows directory destination relative to WSL, for example `"/mnt/c/Users/Username/Desktop/ExampleFolder`"`n"
     mkdir -Force $directory | Out-Null
-    $additionaloptions = "-v ${directory}:/home/designer/shared"
+    $additionaloptions = -join($additionaloptions, "-v ${directory}:/home/designer/shared")
 }
 
 $response = Read-Host -Prompt "Do you want to set additional arguments for the container instantiation? [N/y]"
@@ -54,7 +56,7 @@ if ($response -eq 'y') {
 
 Write-Host ""
 
-$dockercommand = ("docker run -d --pull always " +
+$dockercommand = ("docker run -d " +
     "--name $containername " +
     "-v /tmp/.X11-unix:/tmp/.X11-unix " +
     "-v /mnt/wslg:/mnt/wsl " +

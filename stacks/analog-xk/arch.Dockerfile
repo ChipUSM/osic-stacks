@@ -8,6 +8,9 @@ RUN sudo pacman -Syuq --noconfirm
 # Install packages
 RUN sudo aur-install xschem klayout
 
+RUN pip install gdsfactory --break-system-packages
+RUN pip install gf180 --upgrade --break-system-packages
+
 # Clean cache
 RUN sudo pacman -Scc
 

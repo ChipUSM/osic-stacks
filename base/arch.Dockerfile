@@ -6,7 +6,7 @@ FROM greyltc/archlinux-aur:paru
 RUN pacman -Syuq --noconfirm
 
 # Install packages
-RUN aur-install sudo git python python-pipx xz gnu-free-fonts vim
+RUN aur-install sudo git python python-pip python-pipx xz gnu-free-fonts vim ngspice gedit 
 
 # Clean cache
 RUN pacman -Scc
@@ -20,6 +20,15 @@ USER designer
 ENV PATH="${PATH}:/home/designer/.local/bin"
 RUN pipx install volare
 WORKDIR /home/designer
+
+# PDK Environment variables
+ENV PDK_ROOT /home/designer/.volare
+ENV USER designer
+
+# Add scripts
+RUN mkdir -p .scripts
+COPY --chown=designer:designer --chmod=755 scripts/klayout /home/designer/.scripts
+ENV PATH="/home/designer/.scripts:${PATH}"
 
 # Initialize the enviroment keeping container alive
 CMD ["sleep", "infinity"]

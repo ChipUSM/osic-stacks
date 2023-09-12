@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+export KLAYOUT_HOME=$PDK_ROOT/$PDK/libs.tech/klayout
+if [[ $PDK = gf180mcu* ]]; then
+        if [[ ! -d $KLAYOUT_HOME/pymacros/cells ]]; then
+                mv $KLAYOUT_HOME/pymacros/* $KLAYOUT_HOME/pymacros/cells | mkdir $KLAYOUT_HOME/pymacros/cells
+        fi
+	if [[ ! -f $KLAYOUT_HOME/pymacros/gf180mcu.lym ]]; then
+		mv $KLAYOUT_HOME/tech/gf180mcu.lym $KLAYOUT_HOME/pymacros
+	fi
+fi
+klayout $@

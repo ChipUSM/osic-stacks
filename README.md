@@ -32,7 +32,7 @@ These scripts automate the binding of graphics environment variables to the cont
 
 Execute the next script in powershell.
 ```pwsh
-& ([scriptblock]::Create((irm https://git.1159.cl/Mario1159/osic-stacks/raw/branch/main/scripts/wsl_start.ps1))) -remote
+& ([scriptblock]::Create((irm https://git.1159.cl/Mario1159/osic-stacks/raw/branch/main/run.ps1))) -remote
 ```
  This script will run the container inside wsl and bind the enviroments variables for [wslg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md).
 
