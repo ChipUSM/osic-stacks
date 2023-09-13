@@ -33,7 +33,7 @@ if (!$containername) { $containername = $imagename }
 $additionaloptions = ''
 if($remote) {
     $image = "git.1159.cl/mario1159/$imagename"
-    $additionaloptions = '--pull-always' 
+    $additionaloptions = '--pull always ' 
 } else {
     $image = $imagename
 }
@@ -44,7 +44,7 @@ $response = Read-Host "Do you want to bind the container home directory into a w
 if ($response -eq 'y') {
     $directory = Read-Host "Write the windows directory destination relative to WSL, for example `"/mnt/c/Users/Username/Desktop/ExampleFolder`"`n"
     mkdir -Force $directory | Out-Null
-    $additionaloptions = -join($additionaloptions, "-v ${directory}:/home/designer/shared")
+    $additionaloptions = -join($additionaloptions, "-v ${directory}:/home/designer/shared ")
 }
 
 $response = Read-Host -Prompt "Do you want to set additional arguments for the container instantiation? [N/y]"
