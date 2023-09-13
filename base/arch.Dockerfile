@@ -6,7 +6,7 @@ FROM greyltc/archlinux-aur:paru
 RUN pacman -Syuq --noconfirm
 
 # Install packages
-RUN aur-install sudo git python python-pip python-pipx xz gnu-free-fonts vim ngspice gedit jupyter-notebook
+RUN aur-install sudo git git-lfs python python-pip python-pipx xz gnu-free-fonts vim ngspice gedit jupyter-notebook
 
 # Clean cache
 RUN pacman -Scc
