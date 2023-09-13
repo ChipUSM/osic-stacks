@@ -33,7 +33,7 @@ if (!$containername) { $containername = $imagename }
 $additionaloptions = ''
 if($remote) {
     $image = "git.1159.cl/mario1159/$imagename"
-    $additionaloptions = '--pull always' 
+    $additionaloptions = '--pull-always' 
 } else {
     $image = $imagename
 }
