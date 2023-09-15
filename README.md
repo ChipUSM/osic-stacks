@@ -9,6 +9,13 @@ include_toc: true
 # OSIC Stacks
 *Open Source Integrated Circuits Docker Stacks*
 
+## Highlights
+
+- Simple by design, intended for ease to use.
+- IC design tools evolve quickly, a rolling release distribution allows you to have the latest version of your tool set.
+- Docker images can be heavy, thus these images are distributed in stacks, choose the best fit for your task.
+- Flexible, these containers doesn't restrict you to extend your development environment, feel free to install your own packages.
+
 ## Stacks
 
 - **analog-xk**: Analog workflow using XSchem & KLayout
@@ -39,7 +46,7 @@ Execute the next script in powershell.
 #### Linux
 Execute the next script in your terminal replacing `<container_name>` and `<git.1159.cl/mario1159/image>`.
 ```sh
-docker run -it --name <container_name> -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix <git.1159.cl/mario1159/image>
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --name <container_name> <git.1159.cl/mario1159/image>
 ```
 
 > For Wayland compositors make sure you have XWayland installed
@@ -58,21 +65,56 @@ docker exec -it <container_name> bash
 
 List the available PDKs and choose one to install.
 
+| PDK Technology | PDK Variant |
+|----------------|-------------|
+| sky130         | sky130A     |
+|                | sky130B     |
+| gf180mcu       | gf180mcuA   |
+|                | gf180mcuB   |
+|                | gf180mcuC   |
+
+Replace `<pdk_variant>` and `<pdk_tech>` correspondingly by one of the PDKs listed above.
 ```sh
-export PDK=<sky130A/sky130B/gf180mcuA/gf180mcuB/gf180mcuC>
-volare ls-remote --pdk <sky130/gf180mcu>
-volare enable --pdk <sky130/gf180mcu> <version_id>
+echo 'export PDK=<pdk_variant>' >> ~/.bashrc 
+volare ls-remote --pdk <pdk_tech>
+volare enable --pdk <pdk_tech> <version_id>
 ```
 
 After you have set up the PDK, you can finally start developing your own designs!
 
-## Build
+## Installing additional packages
 
-A singular stack image can be builded using docker in the following way.
-> Note: Each stack image requires their correspondent base image installed.
+For the arch based images you can install packages from the official arch repository using `pacman`.
 
-```sh
-docker build -t <tag> -f <arch/jammy>.Dockerfile <path>
-```
+```pacman -S <package_name>```
+
+or you can also install packages from the AUR using paru.
+
+```paru <package_name>```
 
 ## Custom Images
+
+For creating an image with your own pre-installed set of packages for your team you can create your own docker image extending the stacks, just as the stacks extend the base image. For reference check the stacks dockerfiles.
+
+### Build
+
+A singular stack image can be builded using docker in the following way from the repository root path.
+
+```sh
+docker build -t osicstacks-base-arch -f base/Dockerfile .
+docker build -t <tag> -f stacks/<stack>/arch.Dockerfile .
+```
+
+### Local Run
+
+Images can be tested and runned in the following way.
+
+#### Windows
+```pwsh
+powershell.exe -ExecutionPolicy Bypass run.ps1
+```
+
+#### Linux
+```sh
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --name <container_name> <tag>
+```
