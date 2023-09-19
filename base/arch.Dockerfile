@@ -1,4 +1,4 @@
-# OSIC Stacks - osicstack-base-arch
+# OSIC Stacks - osicstacks-base-arch
 # Base image for OSIC Stacks
 FROM greyltc/archlinux-aur:paru
 
