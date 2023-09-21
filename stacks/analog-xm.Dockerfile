@@ -1,6 +1,7 @@
-# OSIC Stacks - analog-xm-arch
+# OSIC Stacks - analog-xm
 # Dev enviroment for analog circuits development using xschem and magic.
-FROM osicstack-base-arch
+ARG BASE_IMG=osicstacks-base-native
+FROM $BASE_IMG as analog-xm
 
 # Update packages
 RUN sudo pacman -Syuq --noconfirm
@@ -11,5 +12,14 @@ RUN sudo aur-install xschem magic
 # Clean cache
 RUN sudo pacman -Scc
 
-# Initialize the enviroment keeping container alive
+# - Desktop build
+FROM analog-xm as analog-xm-desktop
+
+# Initialize the environment keeping container alive
 CMD ["sleep", "infinity"]
+
+# - Web build
+FROM analog-xm as analog-xm-web
+
+# Run VNC server & desktop environment
+CMD ["startserver"]
