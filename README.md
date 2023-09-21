@@ -56,10 +56,17 @@ docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --name <cont
 Install `Xquartz` and run the linux previous command.
 
 ### 2. Connecting to the container
+
+#### Desktop
+
 After creating and starting the container, enter to it executing a shell with docker.
 ```sh
 docker exec -it <container_name> bash
 ```
+
+#### Web
+
+Connect from the web to the VNC client at `localhost:8444`.
 
 ### 3. Configure Volare
 
@@ -101,8 +108,8 @@ For creating an image with your own pre-installed set of packages for your team 
 A singular stack image can be builded using docker in the following way from the repository root path.
 
 ```sh
-docker build -t osicstacks-base-arch -f base/Dockerfile .
-docker build -t <tag> -f stacks/<stack>/arch.Dockerfile .
+docker build --no-cache -t osicstacks-base-<desktop/web> -f base/<desktop/web>.Dockerfile .
+docker build --no-cache --build-arg BASE_IMG=osicstacks-base-<desktop/web> --target <stack>-<desktop/web> -t <tag> -f stacks/<stack>.Dockerfile .
 ```
 
 ### Local Run
