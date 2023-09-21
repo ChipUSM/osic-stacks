@@ -101,16 +101,33 @@ or you can also install packages from the AUR using paru.
 
 ## Custom Images
 
-For creating an image with your own pre-installed set of packages for your team you can create your own docker image extending the stacks, just as the stacks extend the base image. For reference check the stacks dockerfiles.
+For creating an image with your own pre-installed set of packages for your team you can create your own docker image extending the stacks, just as the stacks extend the base image. For reference check the stacks dockerfiles in the `stack` folder.
+
+The following sections will get you to build and test any of the included stacks or your own custom image.
 
 ### Build
 
-A singular stack image can be builded using docker in the following way from the repository root path.
+Choose a singular stack image to build using docker for the desktop or the web client and replace the `<stack>` placeholder. Keep in mind that following steps are intended to be run from the repository root path.
+
+#### Desktop build
+
+Build the base image and then the stack image.
 
 ```sh
-docker build --no-cache -t osicstacks-base-<desktop/web> -f base/<desktop/web>.Dockerfile .
-docker build --no-cache --build-arg BASE_IMG=osicstacks-base-<desktop/web> --target <stack>-<desktop/web> -t <tag> -f stacks/<stack>.Dockerfile .
+docker build --no-cache -t osicstacks-base-desktop -f base/desktop.Dockerfile .
+docker build --no-cache --build-arg BASE_IMG=osicstacks-base-desktop --target <stack>-desktop -t <tag> -f stacks/<stack>.Dockerfile .
 ```
+
+#### Web build
+
+For the web client build the web client base image the required desktop image as well.
+
+```sh
+docker build --no-cache -t osicstacks-base-desktop -f base/desktop.Dockerfile .
+docker build --no-cache -t osicstacks-base-web -f base/web.Dockerfile .
+docker build --no-cache --build-arg BASE_IMG=osicstacks-base-web --target <stack>-web -t <tag> -f stacks/<stack>.Dockerfile .
+```
+
 
 ### Local Run
 
