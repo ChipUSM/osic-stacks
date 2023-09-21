@@ -9,6 +9,8 @@ include_toc: true
 # OSIC Stacks
 *Open Source Integrated Circuits Docker Stacks*
 
+[screenshot](.gitea/screenshot.png)
+
 ## Highlights
 
 - Simple by design, intended for ease to use.
