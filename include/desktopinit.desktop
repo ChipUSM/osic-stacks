@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=OSICStacks-DesktopInit
+Exec=sh -c "sleep 1 && desktopinit"

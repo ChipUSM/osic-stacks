@@ -27,7 +27,7 @@ ENV USER designer
 
 # Add scripts
 RUN mkdir -p .scripts
-COPY --chown=designer:designer --chmod=755 scripts/klayout /home/designer/.scripts
+COPY --chown=designer:designer --chmod=755 scripts/* /home/designer/.scripts
 ENV PATH="/home/designer/.scripts:${PATH}"
 
 # Initialize the enviroment keeping container alive
