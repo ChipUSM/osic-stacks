@@ -5,6 +5,7 @@ on:
     branches: [ cicd ]
 
 jobs:
+  runs-on: amd64
   dockerbuild:
     runs-on: ubuntu-latest
     container:
