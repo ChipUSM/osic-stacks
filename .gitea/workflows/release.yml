@@ -5,9 +5,8 @@ on:
     branches: [ cicd ]
 
 jobs:
-  runs-on: amd64
   dockerbuild:
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, amd64]
     container:
       image: catthehacker/ubuntu:act-latest
     steps:
