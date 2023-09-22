@@ -30,6 +30,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: false
+          load: true
           tags: osicstacks-base-desktop
           platforms: linux/amd64
           context: .
