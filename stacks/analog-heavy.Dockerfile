@@ -7,7 +7,7 @@ FROM $BASE_IMG as analog-heavy
 RUN sudo pacman -Syuq --noconfirm
 
 # Install packages
-RUN sudo aur-install xschem glu magic klayout
+RUN sudo aur-install xschem glu magic-git klayout
 
 # Clean cache
 RUN sudo pacman -Scc
