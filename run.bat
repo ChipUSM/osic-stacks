@@ -2,6 +2,7 @@
 setlocal
 
 SET IMAGE=akilesalreadytaken/analog-xk:latest
+SET IMAGE=akilesalreadytaken/analog-tools:latest
 
 SET CALL=call
 :parse
@@ -104,7 +105,6 @@ SET CALL=call
     @REM SET COMMAND=jupyter-lab --no-browser
     @REM SET COMMAND=sudo vncserver -select-de xfce
     @REM SET COMMAND=sleep infinity
-    @REM SET COMMAND=bash
 
     @echo on
     %CALL% docker run %PARAMS% %IMAGE% %COMMAND%
