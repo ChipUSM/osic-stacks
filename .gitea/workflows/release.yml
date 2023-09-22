@@ -37,3 +37,14 @@ jobs:
           platforms: linux/amd64
           context: .
           file: ./base/desktop.Dockerfile
+
+      - name: Build web base
+        uses: docker/build-push-action@v4
+        env:
+          ACTIONS_RUNTIME_TOKEN: '' # See https://gitea.com/gitea/act_runner/issues/119
+        with:
+          push: true
+          tags: git.1159.cl/mario1159/osicstacks-base-web:latest
+          platforms: linux/amd64
+          context: .
+          file: ./base/web.Dockerfile
