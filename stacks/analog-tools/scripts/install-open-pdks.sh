@@ -46,6 +46,21 @@ rm -rf .scripts/klayout
 # INSTALL SKY130 PDK
 ####################
 
+# I don't know about pcell support, maybe with pip install sky130?
+# pip install sky130 --upgrade --break-system-packages
+
+# Still having troubles with this:
+# ERROR: Reading /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/sky130.lym: XML parser error: invalid name for processing instruction in line 17, column 6
+# ERROR: Reading /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/sky130.lym: XML parser error: invalid name for processing instruction in line 17, column 6
+# ERROR: Reading /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/sky130.lym: XML parser error: invalid name for processing instruction in line 17, column 6
+
+# Fixing the above, the cells indicates the following:
+# ERROR: /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/cells/via_generator.py:23: ModuleNotFoundError: No module named 'gdsfactory.types'
+#   /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/cells/via_generator.py:23
+#   /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/cells/vias.py:20
+#   /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/cells/__init__.py:21
+#   /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/sky130.lym:9 (class ModuleNotFoundError)
+
 export PDK=sky130
 
 volare enable "${OPEN_PDKS_VERSION}" --pdk "${PDK}"
