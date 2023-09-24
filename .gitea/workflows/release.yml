@@ -121,3 +121,63 @@ jobs:
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-ator.Dockerfile
+
+      - name: Build digital-icarus desktop
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/digital-icarus-desktop
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/digital-icarus.Dockerfile
+
+      - name: Build digital-icarus web
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-icarus
+          tags: git.1159.cl/mario1159/digital-icarus-web
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/digital-icarus.Dockerfile
+
+      - name: Build digital-heavy desktop
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/digital-heavy-desktop
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/digital-heavy.Dockerfile
+
+      - name: Build digital-heavy web
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
+          tags: git.1159.cl/mario1159/digital-heavy-web
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/digital-heavy.Dockerfile
+
+      - name: Build heavy desktop
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/heavy-desktop
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/heavy.Dockerfile
+
+      - name: Build heavy web
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
+          tags: git.1159.cl/mario1159/heavy-web
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/heavy.Dockerfile
