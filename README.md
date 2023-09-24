@@ -13,10 +13,11 @@ include_toc: true
 
 ## Highlights
 
-- Simple by design, intended for ease to use.
+- Intended for ease to use, have your tools integrate tightly with your PDK.
 - IC design tools evolve quickly, a rolling release distribution allows you to have the latest version of your tool set.
 - Docker images can be heavy, thus these images are distributed in stacks, choose the best fit for your task.
 - Flexible, these containers doesn't restrict you to extend your development environment, feel free to install your own packages.
+- Choose between running your applications in a custom linux environment in your web browser or natively in your current desktop environment.
 
 ## Stacks
 
@@ -27,6 +28,8 @@ include_toc: true
 - **digital-icarus**: Digital workflow using Icarus & Yosys
 - **digital-heavy**: Workflow with all the digital tools
 - **heavy**: Workflow with all the previous tools 
+
+> Flavors: web / desktop
 
 ## Usage
 
@@ -73,14 +76,15 @@ docker run -it --name -p 8444:8444 <container_name> git.1159.cl/mario1159/<stack
 
 #### 2a. Desktop
 
-After creating and starting the container, enter to it executing a shell with docker.
+Connect to your container with the using the name specified in the previous step.
+
 ```sh
 docker exec -it <container_name> bash
 ```
 
 #### 2b. Web
 
-Connect from the web to the VNC client at `https://localhost:8444`.
+Access from the web to the VNC client at `https://localhost:8444`.
 
 ### 3. Configure Volare
 
@@ -105,11 +109,11 @@ After you have set up the PDK, you can finally start developing your own designs
 
 ## Installing additional packages
 
-For the arch based images you can install packages from the official arch repository using `pacman`.
+For the arch based images you can install packages from the [official arch repository](https://archlinux.org/packages/) using `pacman`.
 
 ```pacman -S <package_name>```
 
-or you can also install packages from the AUR using paru.
+or you can also install packages from the [AUR](https://aur.archlinux.org/) using paru.
 
 ```paru <package_name>```
 
