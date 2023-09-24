@@ -32,43 +32,55 @@ include_toc: true
 
 Follow these 3 steps to get your container ready.
 
-### 1. Starting a container with graphics output
+### 1. Starting a container
+
+There are two ways to start your container. You can choose (a) to start your container in your actual **desktop** environment and launch the applications from your integrated terminal or (b) you can launch a whole linux desktop environment that can be accessed through a **web** browser.
+
+> Before following the next steps make sure you have docker running.
+
+#### 1a. Starting a container in your **desktop** with native graphics output
 
 Scripts are provided for creating the containers in both Windows and Linux.
 These scripts automate the binding of graphics environment variables to the container in order to enable graphics inside the docker container.
 
-#### Windows
+##### Windows
 
-Execute the next script in powershell.
+Execute the next script in powershell and follow the container initialization prompt.
 ```pwsh
 & ([scriptblock]::Create((irm https://git.1159.cl/Mario1159/osic-stacks/raw/branch/main/run.ps1))) -remote
 ```
- This script will run the container inside wsl and bind the enviroments variables for [wslg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md).
+ This script will run the container inside WSL and bind the enviroments variables for [WSLg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md).
 
-#### Linux
-Execute the next script in your terminal replacing `<container_name>` and `<git.1159.cl/mario1159/image>`.
+##### Linux
+Execute the next script in your terminal replacing `<container_name>` by any name and `<stack>` by an stack from the previous [stack list](#user-content-stacks).
 ```sh
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --name <container_name> <git.1159.cl/mario1159/image>
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --name <container_name> git.1159.cl/mario1159/<stack>-desktop
 ```
 
 > For Wayland compositors make sure you have XWayland installed
 
-#### macOS / OS X
+##### macOS / OS X
 
 Install `Xquartz` and run the linux previous command.
 
+#### 1b. Starting a container with a **Web** VNC client
+If you prefer running the container in your web browser instead of in your integrated terminal, you can select the web flavor of any stack. In this case, it is not necessary to bind extra environment variables for enabling native graphics output.
+```sh
+docker run -it --name -p 8444:8444 <container_name> git.1159.cl/mario1159/<stack>-web
+```
+
 ### 2. Connecting to the container
 
-#### Desktop
+#### 2a. Desktop
 
 After creating and starting the container, enter to it executing a shell with docker.
 ```sh
 docker exec -it <container_name> bash
 ```
 
-#### Web
+#### 2b. Web
 
-Connect from the web to the VNC client at `localhost:8444`.
+Connect from the web to the VNC client at `https://localhost:8444`.
 
 ### 3. Configure Volare
 
