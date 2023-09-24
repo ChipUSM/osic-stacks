@@ -136,7 +136,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-icarus
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
           tags: git.1159.cl/mario1159/digital-icarus-web
           platforms: linux/amd64
           context: .
