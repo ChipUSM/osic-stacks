@@ -7,7 +7,11 @@ FROM $BASE_IMG as digital-ator
 RUN sudo pacman -Syuq --noconfirm
 
 # Install packages
-RUN sudo aur-install verilator gtkwave base-devel cmake
+RUN sudo aur-install \
+    verilator \
+    gtkwave \
+    base-devel \
+    cmake
 
 # Clean cache
 RUN sudo pacman -Scc

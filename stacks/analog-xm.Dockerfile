@@ -7,7 +7,11 @@ FROM $BASE_IMG as analog-xm
 RUN sudo pacman -Syuq --noconfirm
 
 # Install packages
-RUN sudo aur-install xschem glu magic-git
+RUN sudo aur-install \
+    xschem \
+    glu \
+    magic-git \
+    netgen-lvs-git
 
 # Clean cache
 RUN sudo pacman -Scc
