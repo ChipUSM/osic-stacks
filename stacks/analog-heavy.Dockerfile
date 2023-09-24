@@ -1,6 +1,6 @@
 # OSIC Stacks - analog-heavy-arch
 # Dev enviroment for analog circuits development using xschem and klayout.
-ARG BASE_IMG=osicstacks-base-native
+ARG BASE_IMG=osicstacks-base-desktop
 FROM $BASE_IMG as analog-heavy
 
 # Update packages

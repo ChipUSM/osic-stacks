@@ -1,6 +1,7 @@
 # OSIC Stacks - osicstacks-base-web
 # Base image for OSIC Stacks
-FROM osicstacks-base-desktop
+ARG BASE_IMG=osicstacks-base-desktop
+FROM $BASE_IMG as osicstacks-base-web
 
 # Update packages
 RUN sudo pacman -Syuq --noconfirm

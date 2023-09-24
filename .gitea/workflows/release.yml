@@ -16,9 +16,6 @@ jobs:
       - name: Set up Docker BuildX
         uses: docker/setup-buildx-action@v2
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
       - name: Authentication
         uses: docker/login-action@v2
         with:
@@ -29,9 +26,8 @@ jobs:
       - name: Build desktop base
         uses: docker/build-push-action@v4
         with:
-          push: false
-          load: true
-          tags: osicstacks-base-desktop
+          push: true
+          tags: git.1159.cl/mario1159/osicstacks-base-desktop
           platforms: linux/amd64
           context: .
           file: ./base/desktop.Dockerfile
@@ -39,9 +35,9 @@ jobs:
       - name: Build web base
         uses: docker/build-push-action@v4
         with:
-          push: false
-          load: true
-          tags: osicstacks-base-web
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/osicstacks-base-web
           platforms: linux/amd64
           context: .
           file: ./base/web.Dockerfile

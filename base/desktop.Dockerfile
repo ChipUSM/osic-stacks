@@ -1,6 +1,6 @@
-# OSIC Stacks - osicstacks-base-arch
+# OSIC Stacks - osicstacks-base-desktop
 # Base image for OSIC Stacks
-FROM greyltc/archlinux-aur:paru
+FROM greyltc/archlinux-aur:paru as osicstacks-base-desktop
 
 # Update packages
 RUN pacman -Syuq --noconfirm

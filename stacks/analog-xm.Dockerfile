@@ -1,6 +1,6 @@
 # OSIC Stacks - analog-xm
 # Dev enviroment for analog circuits development using xschem and magic.
-ARG BASE_IMG=osicstacks-base-native
+ARG BASE_IMG=osicstacks-base-desktop
 FROM $BASE_IMG as analog-xm
 
 # Update packages
