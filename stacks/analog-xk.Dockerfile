@@ -1,5 +1,5 @@
 # OSIC Stacks - analog-xk
-# Dev enviroment for analog circuits development using xschem and klayout.
+# Dev environment for analog circuits development using xschem and klayout.
 ARG BASE_IMG=osicstacks-base-desktop
 FROM $BASE_IMG as analog-xk
 
@@ -9,7 +9,8 @@ RUN sudo pacman -Syuq --noconfirm
 # Install packages
 RUN sudo aur-install \
     xschem \
-    klayout
+    klayout \
+    netgen-lvs-git
 
 RUN pip install gdsfactory --break-system-packages
 RUN pip install gf180 --upgrade --break-system-packages

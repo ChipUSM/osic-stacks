@@ -1,5 +1,5 @@
-# OSIC Stacks - analog-heavy-arch
-# Dev enviroment for analog circuits development using xschem and klayout.
+# OSIC Stacks - analog-heavy
+# Dev environment for analog design.
 ARG BASE_IMG=osicstacks-base-desktop
 FROM $BASE_IMG as analog-heavy
 
@@ -7,7 +7,12 @@ FROM $BASE_IMG as analog-heavy
 RUN sudo pacman -Syuq --noconfirm
 
 # Install packages
-RUN sudo aur-install xschem glu magic-git klayout
+RUN sudo aur-install \
+    xschem \
+    glu \
+    magic-git \
+    klayout \
+    netgen-lvs-git
 
 # Clean cache
 RUN sudo pacman -Scc

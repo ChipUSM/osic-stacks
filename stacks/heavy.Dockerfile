@@ -1,5 +1,5 @@
-# OSIC Stacks - analog-xk-arch
-# Dev enviroment for analog circuits development using xschem and klayout.
+# OSIC Stacks - heavy
+# Dev environment for ic design.
 ARG BASE_IMG=osicstacks-base-desktop
 FROM $BASE_IMG as heavy
 
