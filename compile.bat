@@ -7,6 +7,8 @@ SET DOCKER_USER=akilesalreadytaken
 SET DOCKER_IMAGE=analog-tools
 SET DOCKER_TAG=latest
 
+SET BASE_IMG=git.1159.cl/mario1159/analog-xk-web:latest
+
 
 SET CALL=call
 :parse
@@ -30,10 +32,7 @@ SET CALL=call
     SET TAG=%DOCKER_USER%/%DOCKER_IMAGE%
     IF DEFINED DOCKER_TAG SET TAG=%TAG%:%DOCKER_TAG%
 
-    %CALL% docker build --rm -t osicstacks-base-desktop -f base/desktop.Dockerfile .
-    %CALL% docker build --rm -t osicstacks-base-web -f base/web.Dockerfile .
-    %CALL% docker build --rm --build-arg BASE_IMG=osicstacks-base-web --target %STACK%-web -t %DOCKER_USER%/%STACK%:latest -f stacks/%STACK%.Dockerfile .
-    %CALL% docker build --rm --build-arg BASE_IMG=%DOCKER_USER%/%STACK%:latest -t %TAG% -f stacks/analog-tools/Dockerfile stacks/analog-tools/
+    %CALL% docker build --rm --build-arg BASE_IMG=%BASE_IMG% -t %TAG% -f stacks/analog-tools/Dockerfile stacks/analog-tools/
     GOTO end
 
 :end
