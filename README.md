@@ -69,7 +69,7 @@ Install `Xquartz` and run the linux previous command.
 #### 1b. Starting a container with a **Web** VNC client
 If you prefer running the container in your web browser instead of in your integrated terminal, you can select the web flavor of any stack. In this case, it is not necessary to bind extra environment variables for enabling native graphics output.
 ```sh
-docker run -it --name -p 8444:8444 <container_name> git.1159.cl/mario1159/<stack>-web
+docker run -it -p 8444:8444 --name <container_name> git.1159.cl/mario1159/<stack>-web
 ```
 
 ### 2. Connecting to the container
