@@ -83,7 +83,7 @@ wsl -d Ubuntu bash -ic $dockercommand
 
 if ($?) {
     Write-Host "Container created successfully!" -ForegroundColor Green
-    Write-Host "Enter the container with `"docker exec -it $containername bash`"" -ForegroundColor DarkGray
+    Write-Host "Enter the container with `"docker exec -it $container_name bash`"" -ForegroundColor DarkGray
 } else {
     Write-Host "Container creation failed, see logs above" -ForegroundColor Red
 }
