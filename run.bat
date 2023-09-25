@@ -138,6 +138,7 @@ SET CALL=call
 
 :end
     endlocal
+    EXIT
 
 
 :normalizepath
