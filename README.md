@@ -55,7 +55,7 @@ Execute the next script in powershell and follow the container initialization pr
  This script will run the container inside WSL and bind the enviroments variables for [WSLg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md).
 
 ##### Linux
-Execute the next script in your terminal replacing `<container_name>` by any name and `<stack>` by an stack from the previous [stack list](#user-content-stacks).
+Execute the next script in your terminal replacing `<container_name>` by any name and `<stack>` by an stack from the previous [stack list](#stacks).
 ```sh
 docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --name <container_name> git.1159.cl/mario1159/<stack>-desktop
 ```
