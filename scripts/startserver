@@ -2,12 +2,18 @@
 cd /home/designer
 
 # Run VNC server
-export DISPLAY=:1
 eval $(vncserver -dry-run) &
 echo -e "password\npassword\n" | vncpasswd -u designer -w -r
 
 # Wait for VNC server to start
-sleep 1
+sleep 2
+while ! xset q &>/dev/null;
+do
+echo "XServer not responsive, retrying..."
+sleep 2
+done
+
+echo "XServer has been found, running desktop environment"
 
 # Run desktop environment (XFCE)
 xfce4-session --display=$DISPLAY

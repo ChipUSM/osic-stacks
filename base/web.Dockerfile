@@ -8,6 +8,7 @@ RUN sudo pacman -Syuq --noconfirm
 
 # Install KASM VNC server
 RUN paru -S --noconfirm kasmvncserver-bin
+ENV DISPLAY=:1
 
 # KASM requires the hostname binary to start
 RUN sudo pacman -S --noconfirm inetutils
