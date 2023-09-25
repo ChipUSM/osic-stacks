@@ -3,22 +3,34 @@ setlocal
 
 SET IMAGE=akilesalreadytaken/analog-xk:latest
 SET IMAGE=akilesalreadytaken/analog-tools:latest
+::SET IMAGE=git.1159.cl/mario1159/analog-xk-web:latest
 
 SET CALL=call
 :parse
-    IF /I ""%1""==""""       GOTO run
-    IF /I ""%1""==""--help"" GOTO documentation
-    IF /I ""%1""==""-h""     GOTO documentation
-    IF /I ""%1""==""--dry""  ( SET "CALL=echo" )
-    IF /I ""%1""==""-s""     ( SET "CALL=echo" )
-    IF /I ""%1""==""--path"" ( SET "DESIGNS=%~2" && SHIFT )
-    IF /I ""%1""==""-p""     ( SET "DESIGNS=%~2" && SHIFT )
+    IF /I ""%~1""==""""       GOTO run
+    IF /I ""%~1""==""--help"" GOTO documentation
+    IF /I ""%~1""==""-h""     GOTO documentation
+    IF /I ""%~1""==""--dry""  ( SET "CALL=echo" )
+    IF /I ""%~1""==""-s""     ( SET "CALL=echo" )
+    IF /I ""%~1""==""--vnc""  ( SET "ENABLE_VNC=" )
+    IF /I ""%~1""==""--path"" ( SET "DESIGNS=%~2" && SHIFT )
+    IF /I ""%~1""==""-p""     ( SET "DESIGNS=%~2" && SHIFT )
+    IF /I ""%~1""==""--pdk""  ( SET "PDK=%~2" && SHIFT )
     SHIFT
     GOTO parse
 
 
 :documentation
-    echo Usage: run.bat %~nx0 [-h^|--help] [-s^|--dry-run] [-p^|--path PATH]
+    echo Usage: run.bat %~nx0 [ OPTIONS ]
+    echo.
+    echo   -h --help            Show usage information
+    echo   -s --dry             See the commands to be executed
+    echo   -p --path PATH       Link to a directory
+    echo      --vnc             Enable the vnc in port "https:\\localhost:8444"
+    echo                        If vnc is not working, execute:
+    echo                           $ xfce4-session --display=:1 &
+    echo      --pdk PDK         Set the PDK to be used (gf180mcuC | sky130A)
+    echo                        By default: gf180mcuC
     GOTO end
 
 
@@ -77,7 +89,7 @@ SET CALL=call
     )
 
     :: Set environment, variables and run the container
-    ::::::::::::::::::::::::::::::::::::::::::::::::::::
+    :::::::::::::::::::::::::::::::::::::::::::::::::::
     echo Check requirements
     %CALL% wsl --install Ubuntu --no-launch
     %CALL% wsl --update
@@ -85,17 +97,21 @@ SET CALL=call
     echo Container does not exist, creating %CONTAINER_NAME% ...
 
     SET PARAMS=-d
-    @REM SET PARAMS=%PARAMS% --user %CONTAINER_USER%:%CONTAINER_GROUP%
     SET PARAMS=%PARAMS% --name %CONTAINER_NAME%
-    @REM SET PARAMS=%PARAMS% --security-opt seccomp=unconfined
-    SET PARAMS=%PARAMS% -p %JUPYTER_PORT%:8888
-    SET PARAMS=%PARAMS% -p %VNC_PORT%:8444
-    SET PARAMS=%PARAMS% -v "%DESIGNS%":/home/designer/shared
-    SET PARAMS=%PARAMS% -v \\wsl.localhost\Ubuntu\mnt\wslg:/tmp
-    SET PARAMS=%PARAMS% -e DISPLAY=%DISPLAY%
-    SET PARAMS=%PARAMS% -e WAYLAND_DISPLAY=%WAYLAND_DISPLAY%
-    SET PARAMS=%PARAMS% -e XDG_RUNTIME_DIR=/mnt/wslg
     SET PARAMS=%PARAMS% -e PDK=%PDK%
+    ::SET PARAMS=%PARAMS% --user %CONTAINER_USER%:%CONTAINER_GROUP%
+    ::SET PARAMS=%PARAMS% --security-opt seccomp=unconfined
+    SET PARAMS=%PARAMS% -p %JUPYTER_PORT%:8888
+    SET PARAMS=%PARAMS% -v "%DESIGNS%":/home/designer/shared
+
+    IF NOT DEFINED ENABLE_VNC (
+        SET PARAMS=%PARAMS% -v \\wsl.localhost\Ubuntu\mnt\wslg:/tmp
+        SET PARAMS=%PARAMS% -e DISPLAY=%DISPLAY%
+        SET PARAMS=%PARAMS% -e WAYLAND_DISPLAY=%WAYLAND_DISPLAY%
+        SET PARAMS=%PARAMS% -e XDG_RUNTIME_DIR=/mnt/wslg
+    ) ELSE (
+        SET PARAMS=%PARAMS% -p %VNC_PORT%:8444
+    )
 
     IF NOT DEFINED IMAGE (
         SET IMAGE=%DOCKER_USER%/%DOCKER_IMAGE%
@@ -103,12 +119,9 @@ SET CALL=call
     )
 
     @REM SET COMMAND=jupyter-lab --no-browser
-    @REM SET COMMAND=sudo vncserver -select-de xfce
     @REM SET COMMAND=sleep infinity
 
-    @echo on
     %CALL% docker run %PARAMS% %IMAGE% %COMMAND%
-    @echo off
 
     GOTO attach_shell
 
