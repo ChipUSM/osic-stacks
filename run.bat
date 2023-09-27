@@ -12,9 +12,11 @@ SET CALL=call
     IF /I ""%~1""==""-h""     GOTO documentation
     IF /I ""%~1""==""--dry""  ( SET "CALL=echo" )
     IF /I ""%~1""==""-s""     ( SET "CALL=echo" )
+    IF /I ""%~1""==""-v""     ( SET "ENABLE_VNC=" )
     IF /I ""%~1""==""--vnc""  ( SET "ENABLE_VNC=" )
     IF /I ""%~1""==""--path"" ( SET "DESIGNS=%~2" && SHIFT )
     IF /I ""%~1""==""-p""     ( SET "DESIGNS=%~2" && SHIFT )
+    IF /I ""%~1""==""-k""     ( SET "PDK=%~2" && SHIFT )
     IF /I ""%~1""==""--pdk""  ( SET "PDK=%~2" && SHIFT )
     SHIFT
     GOTO parse
@@ -26,10 +28,10 @@ SET CALL=call
     echo   -h --help            Show usage information
     echo   -s --dry             See the commands to be executed
     echo   -p --path PATH       Link to a directory
-    echo      --vnc             Enable the vnc in port "https:\\localhost:8444"
+    echo   -v --vnc             Enable the vnc in port "https:\\localhost:8444"
     echo                        If vnc is not working, execute:
-    echo                           $ xfce4-session --display=:1 &
-    echo      --pdk PDK         Set the PDK to be used (gf180mcuC | sky130A)
+    echo                           ^$ xfce4-session --display=:1 ^&
+    echo   -k --pdk PDK         Set the PDK to be used: gf180mcuC ^| sky130A
     echo                        By default: gf180mcuC
     GOTO end
 

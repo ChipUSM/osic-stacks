@@ -68,6 +68,13 @@ function gf180_patch_klayout_precheck_drc() {
     wget -O $KLAYOUT_HOME/drc/rule_decks/$PRECHECK_GF_FILE $PRECHECK_REPO/$PRECHECK_GF_FILE
 }
 
+function gf180_patch() {
+    gf180_patch_xschemrc
+    gf180_patch_klayout_pcells
+    gf180_patch_klayout_dropdown
+    gf180_patch_klayout_precheck_drc
+}
+
 ####################
 # PATCH SKY130 PDK
 ####################
@@ -118,14 +125,15 @@ function sky130_patch_klayout_precheck_drc() {
     wget -O $KLAYOUT_HOME/drc/$PRECHECK_SKY_FILE $PRECHECK_REPO/$PRECHECK_SKY_FILE
 }
 
-gf180_patch_xschemrc
-gf180_patch_klayout_pcells
-gf180_patch_klayout_dropdown
-gf180_patch_klayout_precheck_drc
-sky130_patch_reduced_models
-sky130_patch_klayout_lyt
-sky130_patch_klayout_lym 
-sky130_patch_klayout_pcells
-sky130_patch_klayout_precheck_drc
+function sky130_patch() {
+    sky130_patch_reduced_models
+    sky130_patch_klayout_lyt
+    # sky130_patch_klayout_lym          # TODO: The file disappears
+    # sky130_patch_klayout_pcells       # TODO: Before fixing lym, this explodes
+    sky130_patch_klayout_precheck_drc
+}
 
-aur-install gedit xterm gvim
+gf180_patch
+sky130_patch
+
+sudo aur-install gedit xterm gvim
