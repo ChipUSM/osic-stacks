@@ -1,14 +1,9 @@
 @echo off
 setlocal
 
-SET STACK=analog-xk
-
-SET DOCKER_USER=akilesalreadytaken
-SET DOCKER_IMAGE=analog-tools
-SET DOCKER_TAG=latest
-
-SET BASE_IMG=git.1159.cl/mario1159/analog-xk-web:latest
-
+@REM SET BASE_IMG=git.1159.cl/mario1159/analog-xk-web:latest
+SET BASE_IMG=git.1159.cl/mario1159/analog-xk-desktop:latest
+SET RESULT_IMAGE=akilesalreadytaken/analog-tools:latest
 
 SET CALL=call
 :parse
@@ -29,10 +24,7 @@ SET CALL=call
 
 
 :run
-    SET TAG=%DOCKER_USER%/%DOCKER_IMAGE%
-    IF DEFINED DOCKER_TAG SET TAG=%TAG%:%DOCKER_TAG%
-
-    %CALL% docker build --rm --build-arg BASE_IMG=%BASE_IMG% -t %TAG% -f stacks/analog-tools/Dockerfile stacks/analog-tools/
+    %CALL% docker build --build-arg BASE_IMG=%BASE_IMG% -t %RESULT_IMAGE% -f stacks/analog-tools/Dockerfile stacks/analog-tools/
     GOTO end
 
 :end

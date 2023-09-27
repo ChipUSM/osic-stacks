@@ -56,11 +56,17 @@ SET CALL=call
 
     :: Get parameters from wsl
     ::::::::::::::::::::::::::
-    SET WSL_GET_DISPLAY=wsl --exec bash --norc -c "echo $DISPLAY"
-    FOR /F "USEBACKQ" %%i IN (`%WSL_GET_DISPLAY%`) DO ( SET "DISPLAY=%%i" )
+    SET WSL_GET_PARAMETER=wsl --exec bash --norc -c "echo $DISPLAY"
+    @REM SET WSL_GET_PARAMETER=wsl -d docker-desktop --exec ash -c "echo $DISPLAY"
+    FOR /F "USEBACKQ" %%i IN (`%WSL_GET_PARAMETER%`) DO ( SET "DISPLAY=%%i" )
 
-    SET WSL_GET_WAYLAND_DISPLAY=wsl --exec bash --norc -c "echo $WAYLAND_DISPLAY"
-    FOR /F "USEBACKQ" %%i IN (`%WSL_GET_WAYLAND_DISPLAY%`) DO ( SET "WAYLAND_DISPLAY=%%i" )
+    SET WSL_GET_PARAMETER=wsl --exec bash --norc -c "echo $WAYLAND_DISPLAY"
+    @REM SET WSL_GET_PARAMETER=wsl -d docker-desktop --exec ash -c "echo $WAYLAND_DISPLAY"
+    FOR /F "USEBACKQ" %%i IN (`%WSL_GET_PARAMETER%`) DO ( SET "WAYLAND_DISPLAY=%%i" )
+
+    SET WSL_GET_PARAMETER=wsl --exec bash --norc -c "echo $XDG_RUNTIME_DIR"
+    @REM SET WSL_GET_PARAMETER=wsl -d docker-desktop --exec ash -c "echo $XDG_RUNTIME_DIR"
+    FOR /F "USEBACKQ" %%i IN (`%WSL_GET_PARAMETER%`) DO ( SET "XDG_RUNTIME_DIR=%%i" )
 
     :: Validate parameters
     ::::::::::::::::::::::
@@ -98,20 +104,25 @@ SET CALL=call
 
     SET PARAMS=-d
     SET PARAMS=%PARAMS% --name %CONTAINER_NAME%
-    SET PARAMS=%PARAMS% -e PDK=%PDK%
     ::SET PARAMS=%PARAMS% --user %CONTAINER_USER%:%CONTAINER_GROUP%
-    ::SET PARAMS=%PARAMS% --security-opt seccomp=unconfined
-    SET PARAMS=%PARAMS% -p %JUPYTER_PORT%:8888
-    SET PARAMS=%PARAMS% -v "%DESIGNS%":/home/designer/shared
+    SET PARAMS=%PARAMS% --security-opt seccomp=unconfined
 
-    IF NOT DEFINED ENABLE_VNC (
-        SET PARAMS=%PARAMS% -v \\wsl.localhost\Ubuntu\mnt\wslg:/tmp
-        SET PARAMS=%PARAMS% -e DISPLAY=%DISPLAY%
-        SET PARAMS=%PARAMS% -e WAYLAND_DISPLAY=%WAYLAND_DISPLAY%
-        SET PARAMS=%PARAMS% -e XDG_RUNTIME_DIR=/mnt/wslg
-    ) ELSE (
-        SET PARAMS=%PARAMS% -p %VNC_PORT%:8444
-    )
+    SET PARAMS=%PARAMS% -p %JUPYTER_PORT%:8888
+    SET PARAMS=%PARAMS% -p %VNC_PORT%:8444
+
+    SET PARAMS=%PARAMS% -v "%DESIGNS%":/home/designer/shared
+    SET PARAMS=%PARAMS% -v "\\wsl.localhost\Ubuntu\mnt\wslg":/tmp
+    SET PARAMS=%PARAMS% -v "\\wsl.localhost\Ubuntu\mnt\wslg\runtime-dir":%XDG_RUNTIME_DIR%
+    @REM SET PARAMS=%PARAMS% -v "\\wsl.localhost\docker-desktop\mnt\host\wslg":/tmp
+    @REM SET PARAMS=%PARAMS% -v "\\wsl.localhost\docker-desktop\mnt\host\wslg\runtime-dir":%XDG_RUNTIME_DIR%
+    
+    SET PARAMS=%PARAMS% -e PDK=%PDK%
+    SET PARAMS=%PARAMS% -e DISPLAY=%DISPLAY%
+    SET PARAMS=%PARAMS% -e WAYLAND_DISPLAY=%WAYLAND_DISPLAY%
+    SET PARAMS=%PARAMS% -e XDG_RUNTIME_DIR=%XDG_RUNTIME_DIR%
+    @REM IF NOT DEFINED ENABLE_VNC (
+    @REM ) ELSE (
+    @REM )
 
     IF NOT DEFINED IMAGE (
         SET IMAGE=%DOCKER_USER%/%DOCKER_IMAGE%
