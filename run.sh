@@ -2,7 +2,7 @@
 set -e
 
 # IMAGE=akilesalreadytaken/analog-xk:latest
-IMAGE=akilesalreadytaken/analog-tools:latest
+IMAGE=akilesalreadytaken/chipathon-tools:latest
 # IMAGE=git.1159.cl/mario1159/analog-xk-web:latest
 
 CALL=
@@ -48,7 +48,7 @@ function run () {
     [ -z "${CONTAINER_USER+x}" ]  && CONTAINER_USER=$(id -u)
     [ -z "${CONTAINER_GROUP+x}" ] && CONTAINER_GROUP=$(id -g)
 
-    [ -z "${CONTAINER_NAME+x}" ]  && CONTAINER_NAME=analog-tools
+    [ -z "${CONTAINER_NAME+x}" ]  && CONTAINER_NAME=chipathon-tools
 
     [ -z "${JUPYTER_PORT+x}" ]    && JUPYTER_PORT=8888
     [ -z "${VNC_PORT+x}" ]        && VNC_PORT=8444

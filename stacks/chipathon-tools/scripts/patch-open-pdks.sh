@@ -11,6 +11,7 @@ PRECHECK_REPO=https://raw.githubusercontent.com/efabless/mpw_precheck/main/check
 PRECHECK_GF_FILE=gf180mcuC_mr.drc
 PRECHECK_SKY_FILE=sky130A_mr.drc
 
+# TODO: DOWNLOAD WITH WGET, DONT HAVE IT STATIC
 if [ -d $SCRIPT_DIR/iic-spice-model-red.py ]; then
     echo File iic-spice-model.red.py not found
     return -1

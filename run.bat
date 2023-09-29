@@ -2,7 +2,7 @@
 setlocal
 
 SET IMAGE=akilesalreadytaken/analog-xk:latest
-SET IMAGE=akilesalreadytaken/analog-tools:latest
+SET IMAGE=akilesalreadytaken/chipathon-tools:latest
 ::SET IMAGE=git.1159.cl/mario1159/analog-xk-web:latest
 
 SET CALL=call
@@ -51,7 +51,7 @@ SET CALL=call
     IF NOT DEFINED CONTAINER_USER  SET CONTAINER_USER=1000
     IF NOT DEFINED CONTAINER_GROUP SET CONTAINER_GROUP=1000
 
-    IF NOT DEFINED CONTAINER_NAME  SET CONTAINER_NAME=analog-tools
+    IF NOT DEFINED CONTAINER_NAME  SET CONTAINER_NAME=chipathon-tools
 
     IF NOT DEFINED JUPYTER_PORT    SET JUPYTER_PORT=8888
     IF NOT DEFINED VNC_PORT        SET VNC_PORT=8444

@@ -1,5 +1,5 @@
-ARG BASE_IMG=analog-xk
-FROM $BASE_IMG as analog-tools
+ARG BASE_IMG=heavy-desktop
+FROM $BASE_IMG as chipathon-tools
 
 # Add scripts
 COPY --chown=designer:designer --chmod=755 scripts/install-open-pdks.sh .

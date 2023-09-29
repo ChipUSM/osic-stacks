@@ -2,8 +2,8 @@
 setlocal
 
 @REM SET BASE_IMG=git.1159.cl/mario1159/analog-xk-web:latest
-SET BASE_IMG=git.1159.cl/mario1159/analog-xk-desktop:latest
-SET RESULT_IMAGE=akilesalreadytaken/analog-tools:latest
+SET BASE_IMG=git.1159.cl/mario1159/heavy-desktop:latest
+SET RESULT_IMAGE=akilesalreadytaken/chipathon-tools:latest
 
 SET CALL=call
 :parse
@@ -24,7 +24,7 @@ SET CALL=call
 
 
 :run
-    %CALL% docker build --build-arg BASE_IMG=%BASE_IMG% -t %RESULT_IMAGE% -f stacks/analog-tools/Dockerfile stacks/analog-tools/
+    %CALL% docker build --build-arg BASE_IMG=%BASE_IMG% -t %RESULT_IMAGE% -f stacks/chipathon-tools/Dockerfile stacks/chipathon-tools/
     GOTO end
 
 :end
