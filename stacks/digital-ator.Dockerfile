@@ -1,13 +1,17 @@
-# OSIC Stacks - analog-xk-arch
-# Dev enviroment for analog circuits development using xschem and klayout.
-ARG BASE_IMG=osicstacks-base-native
+# OSIC Stacks - digital-ator
+# Dev environment for digital circuits development using verilator and yosys.
+ARG BASE_IMG=osicstacks-base-desktop
 FROM $BASE_IMG as digital-ator
 
 # Update packages
 RUN sudo pacman -Syuq --noconfirm
 
 # Install packages
-RUN sudo aur-install verilator gtkwave base-devel cmake
+RUN sudo aur-install \
+    verilator \
+    gtkwave \
+    base-devel \
+    cmake
 
 # Clean cache
 RUN sudo pacman -Scc

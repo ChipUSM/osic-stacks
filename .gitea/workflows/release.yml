@@ -1,0 +1,315 @@
+name: release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-base:
+    runs-on: [ubuntu-latest, amd64]
+    container:
+      image: catthehacker/ubuntu:act-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v2
+
+      - name: Authentication
+        uses: docker/login-action@v2
+        with:
+          registry: git.1159.cl
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build desktop base
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: git.1159.cl/mario1159/osicstacks-base-desktop
+          platforms: linux/amd64
+          context: .
+          file: ./base/desktop.Dockerfile
+
+      - name: Build web base
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/osicstacks-base-web
+          platforms: linux/amd64
+          context: .
+          file: ./base/web.Dockerfile
+
+  build-analog-xk:
+    needs: build-base
+    runs-on: [ubuntu-latest, amd64]
+    container:
+      image: catthehacker/ubuntu:act-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v2
+
+      - name: Authentication
+        uses: docker/login-action@v2
+        with:
+          registry: git.1159.cl
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build analog-xk desktop
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/analog-xk-desktop
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/analog-xk.Dockerfile
+
+      - name: Build analog-xk web
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
+          tags: git.1159.cl/mario1159/analog-xk-web
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/analog-xk.Dockerfile
+
+  build-analog-xm:
+    needs: build-base
+    runs-on: [ubuntu-latest, amd64]
+    container:
+      image: catthehacker/ubuntu:act-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v2
+
+      - name: Authentication
+        uses: docker/login-action@v2
+        with:
+          registry: git.1159.cl
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build analog-xm desktop
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/analog-xm-desktop
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/analog-xm.Dockerfile
+
+      - name: Build analog-xm web
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
+          tags: git.1159.cl/mario1159/analog-xm-web
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/analog-xm.Dockerfile
+
+  build-analog-heavy:
+    needs: build-base
+    runs-on: [ubuntu-latest, amd64]
+    container:
+      image: catthehacker/ubuntu:act-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v2
+
+      - name: Authentication
+        uses: docker/login-action@v2
+        with:
+          registry: git.1159.cl
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build analog-heavy desktop
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/analog-heavy-desktop
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/analog-heavy.Dockerfile
+
+      - name: Build analog-heavy web
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
+          tags: git.1159.cl/mario1159/analog-heavy-web
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/analog-heavy.Dockerfile    
+
+  build-digital-ator:
+    needs: build-base
+    runs-on: [ubuntu-latest, amd64]
+    container:
+      image: catthehacker/ubuntu:act-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v2
+
+      - name: Authentication
+        uses: docker/login-action@v2
+        with:
+          registry: git.1159.cl
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build digital-ator desktop
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/digital-ator-desktop
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/digital-ator.Dockerfile
+
+      - name: Build digital-ator web
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
+          tags: git.1159.cl/mario1159/digital-ator-web
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/digital-ator.Dockerfile
+
+  build-digital-icarus:
+    needs: build-base
+    runs-on: [ubuntu-latest, amd64]
+    container:
+      image: catthehacker/ubuntu:act-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v2
+
+      - name: Authentication
+        uses: docker/login-action@v2
+        with:
+          registry: git.1159.cl
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build digital-icarus desktop
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/digital-icarus-desktop
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/digital-icarus.Dockerfile
+
+      - name: Build digital-icarus web
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
+          tags: git.1159.cl/mario1159/digital-icarus-web
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/digital-icarus.Dockerfile
+
+  build-digital-heavy:
+    needs: build-base
+    runs-on: [ubuntu-latest, amd64]
+    container:
+      image: catthehacker/ubuntu:act-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v2
+
+      - name: Authentication
+        uses: docker/login-action@v2
+        with:
+          registry: git.1159.cl
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build digital-heavy desktop
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/digital-heavy-desktop
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/digital-heavy.Dockerfile
+
+      - name: Build digital-heavy web
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
+          tags: git.1159.cl/mario1159/digital-heavy-web
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/digital-heavy.Dockerfile
+
+  build-heavy:
+    needs: build-base
+    runs-on: [ubuntu-latest, amd64]
+    container:
+      image: catthehacker/ubuntu:act-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v2
+
+      - name: Authentication
+        uses: docker/login-action@v2
+        with:
+          registry: git.1159.cl
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build heavy desktop
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: git.1159.cl/mario1159/heavy-desktop
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/heavy.Dockerfile
+
+      - name: Build heavy web
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
+          tags: git.1159.cl/mario1159/heavy-web
+          platforms: linux/amd64
+          context: .
+          file: ./stacks/heavy.Dockerfile

@@ -1,12 +1,13 @@
-# OSIC Stacks - osicstacks-base-arch
+# OSIC Stacks - osicstacks-base-desktop
 # Base image for OSIC Stacks
-FROM greyltc/archlinux-aur:paru
+FROM greyltc/archlinux-aur:paru as osicstacks-base-desktop
 
 # Update packages
 RUN pacman -Syuq --noconfirm
 
 # Install packages
-RUN aur-install sudo git git-lfs python python-pip python-pipx xz gnu-free-fonts vim ngspice gedit jupyterlab xterm
+RUN aur-install sudo git git-lfs python python-pip python-pipx xz gnu-free-fonts vim ngspice gedit jupyter-notebook xterm
+ENV TERM=xterm EDITOR=gedit
 
 # Clean cache
 RUN pacman -Scc
