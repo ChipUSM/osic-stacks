@@ -3,6 +3,7 @@ set -e
 
 SCRIPT_DIR=$PWD
 DROPDOWN_REPO="https://github.com/mabrains/globalfoundries-pdk-libs-gf180mcu_fd_pr"
+GF_VERIFICATION_REPO=https://github.com/efabless/globalfoundries-pdk-libs-gf180mcu_fd_pv
 
 # This files can be downloaded directly
 # - sky130A_mr.drc
@@ -37,8 +38,6 @@ function gf180_patch_xschemrc() {
 }
 
 function gf180_patch_klayout_pcells() {
-    KLAYOUT_HOME="$PDK_ROOT/gf180mcuC/libs.tech/klayout"
-
     mv $KLAYOUT_HOME/pymacros $KLAYOUT_HOME/cells
     mkdir $KLAYOUT_HOME/pymacros
     mv $KLAYOUT_HOME/cells $KLAYOUT_HOME/pymacros
@@ -49,30 +48,41 @@ function gf180_patch_klayout_pcells() {
 
 function gf180_patch_klayout_dropdown() {
     # 27:00 & 36:40
-    KLAYOUT_HOME="$PDK_ROOT/gf180mcuC/libs.tech/klayout"
-    DROPDOWN_DIRECTORY="globalfoundries"
+    DROPDOWN_DIRECTORY="gf_dropdown"
 
     git clone $DROPDOWN_REPO $DROPDOWN_DIRECTORY
 
     cp -r $DROPDOWN_DIRECTORY/rules/klayout/macros $KLAYOUT_HOME
 
-    # There's no directories
-    # cp -r $DROPDOWN_DIRECTORY/rules/klayout/drc/*.drc $KLAYOUT_HOME/drc
-    # cp -r $DROPDOWN_DIRECTORY/rules/klayout/lvs/*.lvs $KLAYOUT_HOME/lvs
-
     rm -rf $DROPDOWN_DIRECTORY
 }
 
+function gf180_patch_klayout_gf_drc() {
+    # 27:00 & 36:40
+    VERIFICATION_DIR="gf_verification"
+
+    git clone $GF_VERIFICATION_REPO $VERIFICATION_DIR
+
+    # rm -rf $KLAYOUT_HOME/drc
+    # rm -rf $KLAYOUT_HOME/lvs
+
+    cp -r $VERIFICATION_DIR/rules/klayout/drc $KLAYOUT_HOME/drc
+    cp -r $VERIFICATION_DIR/rules/klayout/lvs $KLAYOUT_HOME/lvs
+
+    rm -rf $VERIFICATION_DIR
+}
+
 function gf180_patch_klayout_precheck_drc() {
-    KLAYOUT_HOME="$PDK_ROOT/gf180mcuC/libs.tech/klayout"
     #curl -o $KLAYOUT_HOME/drc/rule_decks/$PRECHECK_GF_FILE $PRECHECK_REPO/$PRECHECK_GF_FILE
     wget -O $KLAYOUT_HOME/drc/rule_decks/$PRECHECK_GF_FILE $PRECHECK_REPO/$PRECHECK_GF_FILE
 }
 
 function gf180_patch() {
+    export KLAYOUT_HOME="$PDK_ROOT/gf180mcuC/libs.tech/klayout"
     gf180_patch_xschemrc
     gf180_patch_klayout_pcells
     gf180_patch_klayout_dropdown
+    gf180_patch_klayout_gf_drc
     gf180_patch_klayout_precheck_drc
 }
 
@@ -91,7 +101,6 @@ function sky130_patch_reduced_models() {
 }
 
 function sky130_patch_klayout_lyt() {
-    KLAYOUT_HOME="$PDK_ROOT/sky130A/libs.tech/klayout"
     FILEPATH="$KLAYOUT_HOME/tech/sky130A.lyt"
 
     sed -i 's/>sky130</>sky130A</g' $FILEPATH
@@ -101,7 +110,6 @@ function sky130_patch_klayout_lyt() {
 }
 
 function sky130_patch_klayout_lym () {
-    KLAYOUT_HOME="$PDK_ROOT/sky130A/libs.tech/klayout"
     # ERROR: Reading /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/sky130.lym: XML parser error: invalid name for processing instruction in line 17, column 6
     # ERROR: Reading /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/sky130.lym: XML parser error: invalid name for processing instruction in line 17, column 6
     # ERROR: Reading /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/sky130.lym: XML parser error: invalid name for processing instruction in line 17, column 6
@@ -111,7 +119,6 @@ function sky130_patch_klayout_lym () {
 }
 
 function sky130_patch_klayout_pcells() {
-    KLAYOUT_HOME="$PDK_ROOT/sky130A/libs.tech/klayout"
     # Fixing the above, the cells indicates the following:
     # ERROR: /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/cells/via_generator.py:23: ModuleNotFoundError: No module named 'gdsfactory.types'
     #   /home/designer/.volare/sky130A/libs.tech/klayout/pymacros/cells/via_generator.py:23
@@ -122,11 +129,11 @@ function sky130_patch_klayout_pcells() {
 }
 
 function sky130_patch_klayout_precheck_drc() {
-    KLAYOUT_HOME="$PDK_ROOT/sky130A/libs.tech/klayout"
     wget -O $KLAYOUT_HOME/drc/$PRECHECK_SKY_FILE $PRECHECK_REPO/$PRECHECK_SKY_FILE
 }
 
 function sky130_patch() {
+    export KLAYOUT_HOME="$PDK_ROOT/sky130A/libs.tech/klayout"
     sky130_patch_reduced_models
     sky130_patch_klayout_lyt
     # sky130_patch_klayout_lym          # TODO: The file disappears

@@ -12,9 +12,6 @@ RUN sudo aur-install \
     klayout \
     netgen-lvs-git
 
-RUN pip install gdsfactory --break-system-packages
-RUN pip install gf180 --upgrade --break-system-packages
-
 # Clean cache
 RUN sudo pacman -Scc
 
