@@ -6,7 +6,8 @@ COPY --chown=designer:designer --chmod=755 stacks/chipathon-tools/scripts/instal
 RUN ./install-open-pdks.sh
 
 COPY --chown=designer:designer --chmod=755 stacks/chipathon-tools/scripts/* .
-RUN ./patch-open-pdks.sh
+RUN ./patch-open-pdks-gf180.sh
+RUN ./patch-open-pdks-sky130.sh
 
 RUN rm *.sh
 

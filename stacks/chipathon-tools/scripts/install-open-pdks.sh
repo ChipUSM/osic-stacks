@@ -5,7 +5,9 @@ set -e
 export OPEN_PDKS_VERSION="dd7771c384ed36b91a25e9f8b314355fc26561be"
 export SCRIPT_DIR=$PWD
 
-pip git+https://github.com/gdsfactory/skywater130.git install git+https://github.com/gdsfactory/gf180.git --upgrade --break-system-packages
+#pip install git+https://github.com/gdsfactory/skywater130.git git+https://github.com/gdsfactory/gf180.git --upgrade --break-system-packages
+pip install gf180 --upgrade --break-system-packages
+pip install sky130 --upgrade --break-system-packages
 
 ######################
 # INSTALL GF180MCU PDK
