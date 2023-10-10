@@ -1,8 +1,8 @@
 param(
-    [switch] $remote = $false, 
+    [switch] $pull = $false, 
     [switch] $interactive = $false,
     [switch] $silent = $false,
-    [switch] $clean = $false
+    [switch] $attach = $false
 )
 
 $global:STACK_OPTIONS = [ordered]@{
@@ -30,8 +30,8 @@ function validate-environment() {
     Write-Host "Checking requirements and WSL updates" -ForegroundColor DarkGray
     
     Write-Host ""
-    wsl --install Ubuntu --no-launch
-    wsl --update
+    Call "wsl --install Ubuntu --no-launch"
+    Call "wsl --update"
     Write-Host ""
 }
 
@@ -72,7 +72,7 @@ function bind-to-directory() {
     $response = Read-Host "Do you want to bind the container home directory into a windows directory? [N/y]"
 
     if ($response -eq 'y') {
-        $global:DIRECTORY = Read-Host "Write the windows directory destination relative to WSL, for example `"/mnt/c/Users/Username/Desktop/ExampleFolder`"`n"
+        $global:DIRECTORY = Read-Host "Write the windows directory destination , for example `"C:\Users\Username\Desktop\ExampleFolder`"`n"
     }
 }
 
@@ -89,7 +89,7 @@ function force-pull() {
     $response = Read-Host -Prompt "Do you want to pull latest image? [N/y] [default=N]"
 
     if ($response -eq 'y') {
-        $global:PARAMS += " --pull-always"
+        $global:PARAMS += " --pull always"
     }
 }
 
@@ -112,27 +112,54 @@ function attach-shell () {
     Call "docker exec -it $global:CONTAINER_NAME bash"
 }
 
-function run-docker-wsl() {
-    # if($remote) {
-    #     #$image = "--pull always git.1159.cl/mario1159/$SELECTED_STACK-$EXECMODE"
-    #     $image = "git.1159.cl/mario1159/$SELECTED_STACK-$EXECMODE"
-    # } else {
-    #     $image = "$SELECTED_STACK-$EXECMODE"
-    # }
-    $image = "git.1159.cl/mario1159/$SELECTED_STACK-$EXECMODE"
+function path-conversion() {
+    $directory, $other = $args
+    $drive, $path = $directory.split(":")
 
-    $global:PARAMS += " -d"
+    echo "/mnt/$($drive.tolower())$($path.replace("\","/"))"
+}
+
+function get-value-from-wsl () {
+    $variable, $other = $args
+    return "$(wsl -d Ubuntu bash -c "echo `$$variable")"
+}
+
+function set-common-parameters () {
+    $global:IMAGE = "git.1159.cl/mario1159/$SELECTED_STACK-$EXECMODE"
+
+    if ($attach) {
+        $global:PARAMS += "-it --rm"
+        $global:COMMAND = "bash"
+    } else {
+        $global:PARAMS += "-d"
+        $global:COMMAND = ""
+    }
+
+    if ($pull) {
+        $global:PARAMS += " --pull always"
+    }
+
     $global:PARAMS += " --name $global:CONTAINER_NAME"
+    $global:PARAMS += " --security-opt seccomp=unconfined"
+
+    # $global:PARAMS += " -p '8888:8888'"
+    # $global:PARAMS += " -p '8082:8082'"
+
+    $global:PARAMS += " -e PDK=$global:PDK"
+
+    $global:PARAMS += " -e DISPLAY=$(get-value-from-wsl "DISPLAY")"
+    $global:PARAMS += " -e WAYLAND_DISPLAY=$(get-value-from-wsl "WAYLAND_DISPLAY")"
+    $global:PARAMS += " -e XDG_RUNTIME_DIR=$(get-value-from-wsl "XDG_RUNTIME_DIR")"
+}
+
+function run-docker-wsl() {
+    $global:DIRECTORY = path-conversion $global:DIRECTORY
+
     $global:PARAMS += " -v /tmp/.X11-unix:/tmp/.X11-unix"
     $global:PARAMS += " -v /mnt/wslg:/mnt/wsl"
+    $global:PARAMS += " -v ${global:DIRECTORY}:/home/designer/shared "
 
-    $global:PARAMS += " -e WAYLAND_DISPLAY=`$WAYLAND_DISPLAY"
-    $global:PARAMS += " -e DISPLAY=`$DISPLAY"
-    $global:PARAMS += " -e XDG_RUNTIME_DIR=/mnt/wslg"
-    $global:PARAMS += " -v /mnt/${global:DIRECTORY}:/home/designer/shared "
-
-    #wsl -d Ubuntu bash -ic "docker run ${PARAMS} ${image}"
-    echo "docker run ${PARAMS} ${image}"
+    Call "wsl -d Ubuntu bash --noprofile --norc -ic `"docker run $global:PARAMS $global:IMAGE $global:COMMAND`""
 
     if ($?) {
         Write-Host "Container created successfully!" -ForegroundColor Green
@@ -145,34 +172,11 @@ function run-docker-wsl() {
 }
 
 function run-docker-win() {
-    $image = "git.1159.cl/mario1159/$SELECTED_STACK-$EXECMODE"
-
-    if ($clean) {    
-        $global:PARAMS += "-it --rm"
-        $global:COMMAND = "bash"
-    } else {
-        $global:PARAMS += "-d"
-        $global:COMMAND = ""
-    }
-    $global:PARAMS += " --name $global:CONTAINER_NAME"
-    $global:PARAMS += " --security-opt seccomp=unconfined"
-
-    # $global:PARAMS += " -p '8888:8888'"
-
     $global:PARAMS += " -v '\\wsl.localhost\Ubuntu\mnt\wslg:/tmp'"
     $global:PARAMS += " -v ${global:DIRECTORY}:/home/designer/shared"
     #$global:PARAMS += " -v '\\wsl.localhost\Ubuntu\mnt\wslg\runtime-dir'%XDG_RUNTIME_DIR%"
 
-    #$global:PARAMS += " -e WAYLAND_DISPLAY=`$WAYLAND_DISPLAY"
-    $global:PARAMS += " -e PDK=$global:PDK"
-    $global:PARAMS += " -e DISPLAY=:0"
-    # $global:PARAMS += " -e XDG_RUNTIME_DIR=/mnt/wslg"
-    # SET PARAMS=%PARAMS% -e DISPLAY=%DISPLAY%
-    # SET PARAMS=%PARAMS% -e WAYLAND_DISPLAY=%WAYLAND_DISPLAY%
-    # SET PARAMS=%PARAMS% -e XDG_RUNTIME_DIR=%XDG_RUNTIME_DIR%
-
-    
-    Call "docker run ${PARAMS} ${image} $global:COMMAND"
+    Call "docker run $global:PARAMS $global:IMAGE $global:COMMAND"
 
     if ($?) {
         Write-Host "Container created successfully!" -ForegroundColor Green
@@ -202,7 +206,10 @@ function run(){
         force-pull
     }
 
-    run-docker-win
+    set-common-parameters
+
+    # run-docker-win
+    run-docker-wsl
 }
 
 run
