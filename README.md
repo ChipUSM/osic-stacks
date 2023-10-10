@@ -50,9 +50,9 @@ These scripts automate the binding of graphics environment variables to the cont
 
 Execute the next script in powershell and follow the container initialization prompt.
 ```pwsh
-& ([scriptblock]::Create((irm https://git.1159.cl/Mario1159/osic-stacks/raw/branch/main/run.ps1))) -remote
+& ([scriptblock]::Create((irm https://git.1159.cl/Mario1159/osic-stacks/raw/branch/main/run.ps1))) -pull -download
 ```
- This script will run the container inside WSL and bind the enviroments variables for [WSLg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md).
+ This script will run the container inside WSL and bind the enviroments variables for [WSLg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md). Also, it will download itself so it will exists locally.
 
 ##### Linux
 Execute the next script in your terminal replacing `<container_name>` by any name and `<stack>` by an stack from the previous [stack list](#stacks).
