@@ -2,7 +2,8 @@ param(
     [switch] $pull = $false, 
     [switch] $interactive = $false,
     [switch] $silent = $false,
-    [switch] $attach = $false
+    [switch] $attach = $false,
+    [switch] $download = $false
 )
 
 $global:STACK_OPTIONS = [ordered]@{
@@ -188,14 +189,30 @@ function run-docker-win() {
     }
 }
 
+function download-run-bat () {
+    if (!$download) { return }
+
+    try {
+        $response = Call "Invoke-WebRequest -URI https://git.1159.cl/Mario1159/osic-stacks/src/branch/main/run.ps1"
+    } catch {
+        $StatusCode = $_.Exception.Response.StatusCode.value__
+        Write-Host "Error downloading file :( ($($StatusCode))" -ForegroundColor Red
+        return
+    }
+
+    Write-Host "run.bat updated successfully" -ForegroundColor Green
+}
+
 function run(){
     if ($silent) {
+        Write-Host "[Silent Mode]" -ForegroundColor Yellow
         Remove-Alias Call
         New-Alias Call Write-Host
     }
 
     Write-Host "OSIC-Stacks Container Creation" -ForegroundColor Green
 
+    download-run-bat
     validate-environment
 
     if ($interactive) {
@@ -208,7 +225,7 @@ function run(){
 
     set-common-parameters
 
-    # run-docker-win
+    #run-docker-win
     run-docker-wsl
 }
 
