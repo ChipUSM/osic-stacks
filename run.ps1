@@ -129,10 +129,10 @@ function set-common-parameters () {
     $global:IMAGE = "git.1159.cl/mario1159/$SELECTED_STACK-$EXECMODE"
 
     if ($attach) {
-        $global:PARAMS += "-it --rm"
+        $global:PARAMS += " -it --rm"
         $global:COMMAND = "bash"
     } else {
-        $global:PARAMS += "-d"
+        $global:PARAMS += " -d"
         $global:COMMAND = ""
     }
 
