@@ -2,7 +2,7 @@
 
 set -e
 
-export OPEN_PDKS_VERSION="dd7771c384ed36b91a25e9f8b314355fc26561be"
+export OPEN_PDKS_VERSION="e0f692f46654d6c7c99fc70a0c94a080dab53571"
 export SCRIPT_DIR=$PWD
 
 #pip install git+https://github.com/gdsfactory/skywater130.git git+https://github.com/gdsfactory/gf180.git --upgrade --break-system-packages
