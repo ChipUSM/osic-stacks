@@ -20,7 +20,7 @@ $global:STACK_OPTIONS = [ordered]@{
 $global:SELECTED_STACK='chipathon-tools'
 $global:CONTAINER_NAME=$global:SELECTED_STACK
 $global:EXECMODE='desktop'
-$global:PDK="gf180mcuC"
+$global:PDK="gf180mcuD"
 $global:DIRECTORY=Get-Location | Foreach-Object { $_.Path }
 
 $global:PARAMS = ""
