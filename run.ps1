@@ -193,7 +193,7 @@ function download-run-bat () {
     if (!$download) { return }
 
     try {
-        $response = Call "Invoke-WebRequest -URI https://git.1159.cl/Mario1159/osic-stacks/src/branch/main/run.ps1"
+        $response = Call "Invoke-WebRequest -URI https://git.1159.cl/Mario1159/osic-stacks/raw/branch/main/run.ps1"
     } catch {
         $StatusCode = $_.Exception.Response.StatusCode.value__
         Write-Host "Error downloading file :( ($($StatusCode))" -ForegroundColor Red
