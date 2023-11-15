@@ -5,9 +5,9 @@ SCRIPT_DIR=$PWD
 
 # This files can be downloaded directly
 # - sky130A_mr.drc
-# - gf180mcuC_mr.drc
+# - gf180mcuD_mr.drc
 PRECHECK_REPO=https://raw.githubusercontent.com/efabless/mpw_precheck/main/checks/tech-files/
-PRECHECK_GF_FILE=gf180mcuC_mr.drc
+PRECHECK_GF_FILE=gf180mcuD_mr.drc
 PRECHECK_SKY_FILE=sky130A_mr.drc
 
 sudo aur-install wget
@@ -15,7 +15,7 @@ pip install docopt --upgrade --break-system-packages
 
 
 function gf180_patch_xschemrc() {
-    FILEPATH=$PDK_ROOT/gf180mcuC/libs.tech/xschem/xschemrc
+    FILEPATH=$PDK_ROOT/gf180mcuD/libs.tech/xschem/xschemrc
 
     ORIGINAL='append XSCHEM_LIBRARY_PATH :$env(PWD)'
     REPLACE='append XSCHEM_LIBRARY_PATH :$env(PDK_ROOT)/$env(PDK)/libs.tech/xschem'
@@ -27,9 +27,9 @@ function gf180_patch_xschemrc() {
 }
 
 function gf180_patch_klayout_pcells() {
-    mv $KLAYOUT_HOME/pymacros $KLAYOUT_HOME/cells
+    mv $KLAYOUT_HOME/pymacros          $KLAYOUT_HOME/cells
     mkdir $KLAYOUT_HOME/pymacros
-    mv $KLAYOUT_HOME/cells $KLAYOUT_HOME/pymacros
+    mv $KLAYOUT_HOME/cells             $KLAYOUT_HOME/pymacros
     mv $KLAYOUT_HOME/tech/gf180mcu.lym $KLAYOUT_HOME/pymacros
 
     rm -rf .scripts/klayout
@@ -64,12 +64,11 @@ function gf180_patch_klayout_gf_drc() {
 }
 
 function gf180_patch_klayout_precheck_drc() {
-    #curl -o $KLAYOUT_HOME/drc/rule_decks/$PRECHECK_GF_FILE $PRECHECK_REPO/$PRECHECK_GF_FILE
     wget -O $KLAYOUT_HOME/drc/rule_decks/$PRECHECK_GF_FILE $PRECHECK_REPO/$PRECHECK_GF_FILE
 }
 
 function gf180_patch() {
-    export KLAYOUT_HOME="$PDK_ROOT/gf180mcuC/libs.tech/klayout"
+    export KLAYOUT_HOME="$PDK_ROOT/gf180mcuD/libs.tech/klayout"
     gf180_patch_xschemrc
     gf180_patch_klayout_pcells
     gf180_patch_klayout_precheck_drc

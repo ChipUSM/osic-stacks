@@ -17,18 +17,16 @@ volare enable "${OPEN_PDKS_VERSION}" --pdk gf180mcu
 
 rm -rf $PDK_ROOT/volare/gf180mcu/versions/*/gf180mcuA
 rm -rf $PDK_ROOT/volare/gf180mcu/versions/*/gf180mcuB
-#rm -rf $PDK_ROOT/volare/gf180mcu/versions/*/gf180mcuC  ## Some day...
+rm -rf $PDK_ROOT/volare/gf180mcu/versions/*/gf180mcuC
 rm -rf $PDK_ROOT/gf180mcuA
 rm -rf $PDK_ROOT/gf180mcuB
-rm -rf $PDK_ROOT/gf180mcuD
+rm -rf $PDK_ROOT/gf180mcuC
 
 ####################
 # INSTALL SKY130 PDK
 ####################
 
 volare enable "${OPEN_PDKS_VERSION}" --pdk sky130
-
-# ADD PCELL SUPPORT
 
 # remove version sky130B to save space (efabless TO use mostly sky130A)
 rm -rf "$PDK_ROOT"/volare/sky130/versions/*/sky130B

@@ -1,21 +1,32 @@
 [[ $- != *i* ]] && return
 
+# ------------------
+# SET PDK PARAMETERS
+# ------------------
+
+if [ "$PDK" == "" ]; then
+    echo "PDK not defined, using default one (gf180mcuD)"
+    PDK=gf180cmuD
+fi
+
 case "$PDK" in
-gf180mcuC)
-    export PDKPATH=$PDK_ROOT/$PDK
-    export STD_CELL_LIBRARY=gf180mcu_fd_sc_mcu7t5v0
-    ;;
-sky130A)
-    export PDKPATH=$PDK_ROOT/$PDK
-    export STD_CELL_LIBRARY=sky130_fd_sc_hd
-    ;;
-*)
-    echo "PDK not defined, using default one (gf180mcuC)"
-    export PDK=gf180mcuC
-    export PDKPATH=$PDK_ROOT/$PDK
-    export STD_CELL_LIBRARY=gf180mcu_fd_sc_mcu7t5v0
-    ;;
+gf180mcuC) export STD_CELL_LIBRARY=gf180mcu_fd_sc_mcu7t5v0 ;;
+gf180mcuD) export STD_CELL_LIBRARY=gf180mcu_fd_sc_mcu7t5v0 ;;
+sky130A)   export STD_CELL_LIBRARY=sky130_fd_sc_hd ;;
+*)         echo "PDK $PDK NOT RECOGNIZED";;
 esac
+
+export PDKPATH=$PDK_ROOT/$PDK
+
+export KLAYOUT_HOME=$PDK_ROOT/$PDK/libs.tech/klayout
+
+alias xschem='xschem -b --rcfile $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc'
+alias xschemtcl='xschem --rcfile $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc'
+#alias magic='magic --rcfile $PDK_ROOT/$PDK/libs.tech/magic/*.magicrc'
+
+# ------------------
+# SET PROMPT
+# ------------------
 
 function git_branch {
     branch=$(git symbolic-ref --short HEAD 2>/dev/null)
@@ -37,13 +48,12 @@ c_whi='\[\033[01;37m\]'   # White
 # export PS1="${c_pur}\w $(git_branch)\n${c_res}\$ " ## This dont work :(
 PS1="${c_pur}\w \n${c_res}\$ " ## This dont work :(
 
-export KLAYOUT_HOME=$PDK_ROOT/$PDK/libs.tech/klayout
-export DESIGNS="/home/designer/shared"
+# --------------------------------
+# USEFUL ENV VARIABLES AND ALIASES
+# --------------------------------
 
 alias ls="ls --color=auto -XF"
 alias grep="grep --color=auto"
 
-alias xschem='xschem -b --rcfile $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc'
-alias xschemtcl='xschem --rcfile $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc'
-
-git config --global --add safe.directory $DESIGNS
+git config --global --add safe.directory /home/designer/shared
+git config --global --add safe.directory /workspaces/*
