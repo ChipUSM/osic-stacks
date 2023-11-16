@@ -22,10 +22,26 @@ $global:CONTAINER_NAME=$global:SELECTED_STACK
 $global:EXECMODE='desktop'
 $global:PDK="gf180mcuD"
 $global:DIRECTORY=Get-Location | Foreach-Object { $_.Path }
+$global:WSL_DISTRO="NO DISTRO"
 
 $global:PARAMS = ""
 
 New-Alias Call Invoke-Expression
+
+function debug($fname, $message) {
+    Write-Host "[$fname] $message" -ForegroundColor Green
+}
+
+function get-ubuntu-distro() {
+    # Identify if distro has (Predeterminado) or something like that
+    Invoke-Expression "wsl --list" | ForEach-Object {
+        if ($_ -match '\)' ) {
+            $global:WSL_DISTRO=$_.split('(')[0].replace(" ","")
+        }
+    }
+
+    debug "get-ubuntu-distro" "Linux distribution: $global:WSL_DISTRO"
+}
 
 function validate-environment() {
     Write-Host "Checking requirements and WSL updates" -ForegroundColor DarkGray
@@ -120,9 +136,34 @@ function path-conversion() {
     echo "/mnt/$($drive.tolower())$($path.replace("\","/"))"
 }
 
-function get-value-from-wsl () {
+function get-value-from-wsl() {
     $variable, $other = $args
-    return "$(wsl -d Ubuntu bash -c "echo `$$variable")"
+
+    $cmd = "wsl bash -c `'echo `$$variable`'"
+
+    # Simple replacement
+    #$cmd = "wsl -d $global:WSL_DISTRO bash -c `'echo `$$variable`'"
+    #$cmd = "wsl -d `'$global:WSL_DISTRO`' bash -c `'echo `$$variable`'"
+
+    # Using parenthesis
+    #$cmd = "wsl -d $($global:WSL_DISTRO) bash -c `'echo `$$variable`'"
+    #$cmd = "wsl -d `'$($global:WSL_DISTRO)`' bash -c `'echo `$$variable`'"
+    #$cmd = "wsl -d `"$($global:WSL_DISTRO)`" bash -c `'echo `$$variable`'"
+
+    # Using curly braces
+    #$cmd = "wsl -d ${global:WSL_DISTRO} bash -c `'echo `$$variable`'"
+    #$cmd = "wsl -d '${global:WSL_DISTRO}' bash -c `'echo `$$variable`'"
+
+    # Using here strings (Never worked)
+    # @"
+    # "wsl -d $global:WSL_DISTRO bash -c `'echo `$$variable`'"
+    # "@
+
+    debug "get-value-from-wsl" "Command: $cmd"
+
+    $response = Invoke-Expression "$cmd"
+    debug "get-value-from-wsl" "Response: $response"
+    return $response
 }
 
 function set-common-parameters () {
@@ -160,7 +201,8 @@ function run-docker-wsl() {
     $global:PARAMS += " -v /mnt/wslg:/mnt/wsl"
     $global:PARAMS += " -v ${global:DIRECTORY}:/home/designer/shared "
 
-    Call "wsl -d Ubuntu bash --noprofile --norc -ic `"docker run $global:PARAMS $global:IMAGE $global:COMMAND`""
+    #Call "wsl -d $global:WSL_DISTRO bash --noprofile --norc -ic `"docker run $global:PARAMS $global:IMAGE $global:COMMAND`""
+    Call "wsl bash --noprofile --norc -ic `"docker run $global:PARAMS $global:IMAGE $global:COMMAND`""
 
     if ($?) {
         Write-Host "Container created successfully!" -ForegroundColor Green
@@ -173,9 +215,9 @@ function run-docker-wsl() {
 }
 
 function run-docker-win() {
-    $global:PARAMS += " -v '\\wsl.localhost\Ubuntu\mnt\wslg:/tmp'"
+    $global:PARAMS += " -v '\\wsl.localhost\$global:WSL_DISTRO\mnt\wslg:/tmp'"
     $global:PARAMS += " -v ${global:DIRECTORY}:/home/designer/shared"
-    #$global:PARAMS += " -v '\\wsl.localhost\Ubuntu\mnt\wslg\runtime-dir'%XDG_RUNTIME_DIR%"
+    #$global:PARAMS += " -v '\\wsl.localhost\$global:WSL_DISTRO\mnt\wslg\runtime-dir'%XDG_RUNTIME_DIR%"
 
     Call "docker run $global:PARAMS $global:IMAGE $global:COMMAND"
 
@@ -214,6 +256,7 @@ function run(){
 
     download-run-bat
     validate-environment
+    get-ubuntu-distro
 
     if ($interactive) {
         select-stack
