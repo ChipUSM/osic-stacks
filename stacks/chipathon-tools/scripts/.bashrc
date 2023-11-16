@@ -6,11 +6,11 @@
 
 if [ "$PDK" == "" ]; then
     echo "PDK not defined, using default one (gf180mcuD)"
-    PDK=gf180cmuD
+    PDK=gf180mcuD
 fi
 
 case "$PDK" in
-gf180mcuC) export STD_CELL_LIBRARY=gf180mcu_fd_sc_mcu7t5v0 ;;
+gf180mcuC) echo "gf180mcuC is not supported, only D variant [default one]" ;;
 gf180mcuD) export STD_CELL_LIBRARY=gf180mcu_fd_sc_mcu7t5v0 ;;
 sky130A)   export STD_CELL_LIBRARY=sky130_fd_sc_hd ;;
 *)         echo "PDK $PDK NOT RECOGNIZED";;
