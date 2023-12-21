@@ -1,28 +1,90 @@
 #!/bin/bash
 set -ex
 
+function _arch_setup() {
+    sudo aur-install wget gedit xterm gvim
+    pip install docopt --upgrade --break-system-packages
+}
+
+
+function _gf180mcuD_clean_install() {
+    # Re-installs gf180mcuD
+
+    rm -rf $PDK_ROOT/gf180mcu*
+    rm -rf $PDK_ROOT/volare/gf180mcu/versions/$OPEN_PDKS_COMMIT
+
+    volare enable --pdk gf180mcu $OPEN_PDKS_COMMIT
+
+    rm -rf $PDK_ROOT/gf180mcuA
+    rm -rf $PDK_ROOT/gf180mcuB
+    rm -rf $PDK_ROOT/gf180mcuC
+
+    rm -rf $PDK_ROOT/volare/gf180mcu/versions/$OPEN_PDKS_COMMIT/gf180mcuA
+    rm -rf $PDK_ROOT/volare/gf180mcu/versions/$OPEN_PDKS_COMMIT/gf180mcuB
+    rm -rf $PDK_ROOT/volare/gf180mcu/versions/$OPEN_PDKS_COMMIT/gf180mcuC
+}
+
+
 function gf180_delete_repos() {
     rm -rf globalfoundries-pdk-libs-gf180mcu_fd_pr
     rm -rf globalfoundries-pdk-libs-gf180mcu_fd_pv
 }
 
+
 function gf180_download_repos() {
     gf180_delete_repos
 
-    git clone https://github.com/efabless/globalfoundries-pdk-libs-gf180mcu_fd_pr.git
-    git clone https://github.com/efabless/globalfoundries-pdk-libs-gf180mcu_fd_pv.git
+    git clone --depth 1 https://github.com/efabless/globalfoundries-pdk-libs-gf180mcu_fd_pr.git
+    git clone --depth 1 https://github.com/efabless/globalfoundries-pdk-libs-gf180mcu_fd_pv.git
 }
 
-function gf180_patch_xschemrc() {
+
+function gf180_patch_ngspice_primitives() {
+    NGSPICE_TECH=$PDK_ROOT/gf180mcuD/libs.tech/ngspice
+    
+    rm -rf $NGSPICE_TECH
+    mv globalfoundries-pdk-libs-gf180mcu_fd_pr/models/ngspice $NGSPICE_TECH
+}
+
+
+function gf180_patch_xyce_primitives() {
+    XYCE_TECH=$PDK_ROOT/gf180mcuD/libs.tech/xyce
+
+    rm -rf $XYCE_TECH
+    mv globalfoundries-pdk-libs-gf180mcu_fd_pr/models/xyce $XYCE_TECH
+}
+
+function gf180_patch_xschem_primitives() {
+    # Replace volare xschem dir with efabless one
+    XSCHEM_TECH=$PDK_ROOT/gf180mcuD/libs.tech/xschem
+
+    rm -rf $XSCHEM_TECH
+    mv globalfoundries-pdk-libs-gf180mcu_fd_pr/cells/xschem $XSCHEM_TECH
+}
+
+function gf180_patch_xschem_xschemrc() {
     FILEPATH=$PDK_ROOT/gf180mcuD/libs.tech/xschem/xschemrc
 
+    # Add gf180mcuD symbols to xschem path
     ORIGINAL='append XSCHEM_LIBRARY_PATH :$env(PWD)'
-    REPLACE='append XSCHEM_LIBRARY_PATH :$env(PDK_ROOT)/$env(PDK)/libs.tech/xschem'
+    REPLACE='append XSCHEM_LIBRARY_PATH :$env(PDK_ROOT)/gf180mcuD/libs.tech/xschem'
     sed -i "s\\$ORIGINAL\\$REPLACE\g" $FILEPATH
 
+    # Update 180MCU_MODELS
     ORIGINAL='set 180MCU_MODELS ${PDK_ROOT}/models/ngspice'
-    REPLACE='set 180MCU_MODELS $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice'
+    REPLACE='set 180MCU_MODELS $env(PDK_ROOT)/gf180mcuD/libs.tech/ngspice'
     sed -i "s\\$ORIGINAL\\$REPLACE\g" $FILEPATH
+
+    # Allow setting of symbol paths with XSCHEM_USER_LIBRARY_PATH env variable
+    echo '' >> $FILEPATH
+    echo '# open_pdks-specific' >> $FILEPATH
+    echo 'set XSCHEM_START_WINDOW ${PDK_ROOT}/gf180mcuD/libs.tech/xschem/tests/0_top.sch' >> $FILEPATH
+    echo 'append XSCHEM_LIBRARY_PATH :${PDK_ROOT}/gf180mcuD/libs.tech/xschem' >> $FILEPATH
+    echo '' >> $FILEPATH
+    echo '# allow a user-specific path add-on' >> $FILEPATH
+    echo 'if { [info exists ::env(XSCHEM_USER_LIBRARY_PATH) ] } {' >> $FILEPATH
+    echo '    append XSCHEM_LIBRARY_PATH :$env(XSCHEM_USER_LIBRARY_PATH)' >> $FILEPATH
+    echo '}' >> $FILEPATH
 }
 
 function gf180_patch_klayout_pcells() {
@@ -45,8 +107,8 @@ function gf180_patch_klayout_drc_lvs() {
     rm -rf $KLAYOUT_HOME/drc
     rm -rf $KLAYOUT_HOME/lvs
 
-    cp globalfoundries-pdk-libs-gf180mcu_fd_pv/klayout/drc $KLAYOUT_HOME
-    cp globalfoundries-pdk-libs-gf180mcu_fd_pv/klayout/lvs $KLAYOUT_HOME
+    mv globalfoundries-pdk-libs-gf180mcu_fd_pv/klayout/drc $KLAYOUT_HOME
+    mv globalfoundries-pdk-libs-gf180mcu_fd_pv/klayout/lvs $KLAYOUT_HOME
 }
 
 function gf180_patch_klayout_dropdown() {
@@ -54,8 +116,23 @@ function gf180_patch_klayout_dropdown() {
     # Depends on $KLAYOUT_HOME/drc $KLAYOUT_HOME/lvs
     mv globalfoundries-pdk-libs-gf180mcu_fd_pr/rules/klayout/macros $KLAYOUT_HOME
 
-    # Make D the default variant
-    sed -i "s/variant: C/variant: D/g" $KLAYOUT_HOME/macros/*_options.yml
+    # Make D the default variant in {drc lvs}_options.yml
+    FILEPATH=$KLAYOUT_HOME/macros/*_options.yml
+    
+    ORIGINAL='variant: C'
+    REPLACE='variant: D'
+    sed -i "s\\$ORIGINAL\\$REPLACE\g" $FILEPATH
+
+    # Make D default on .lym
+    FILEPATH=$KLAYOUT_HOME/macros/gf180mcu_options.lym
+
+    ORIGINAL=';"C"'
+    REPLACE=';"D"'
+    sed -i "s\\$ORIGINAL\\$REPLACE\g" $FILEPATH
+
+    ORIGINAL='], 2)'
+    REPLACE='], 3)'
+    sed -i "s\\$ORIGINAL\\$REPLACE\g" $FILEPATH
 }
 
 function gf180_patch_klayout_precheck_drc() {
@@ -69,12 +146,17 @@ function gf180_patch_klayout_lyp() {
 
 function gf180_patch() {
     # volare pdk should be installed with ./volare_install.sh
-
     export KLAYOUT_HOME="$PDK_ROOT/gf180mcuD/libs.tech/klayout"
 
     gf180_download_repos
 
-    gf180_patch_xschemrc
+    gf180_patch_ngspice_primitives
+
+    gf180_patch_xyce_primitives
+
+    gf180_patch_xschem_primitives
+    gf180_patch_xschem_xschemrc
+
     gf180_patch_klayout_pcells
     gf180_patch_klayout_tech_clean
     gf180_patch_klayout_drc_lvs
@@ -85,19 +167,8 @@ function gf180_patch() {
     gf180_delete_repos
 }
 
+source ./global-variables.sh
 
-SCRIPT_DIR=$PWD
-
-# This files can be downloaded directly
-# - sky130A_mr.drc
-# - gf180mcuD_mr.drc
-PRECHECK_REPO=https://raw.githubusercontent.com/efabless/mpw_precheck/main/checks/tech-files/
-PRECHECK_GF_FILE=gf180mcuD_mr.drc
-PRECHECK_SKY_FILE=sky130A_mr.drc
-
-sudo aur-install wget
-pip install docopt --upgrade --break-system-packages
-
+#_gf180mcuD_clean_install
+_arch_setup
 gf180_patch
-
-sudo aur-install gedit xterm gvim

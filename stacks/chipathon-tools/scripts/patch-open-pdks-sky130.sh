@@ -1,23 +1,6 @@
 #!/bin/bash
 set -ex
 
-SCRIPT_DIR=$PWD
-
-# This files can be downloaded directly
-# - sky130A_mr.drc
-# - gf180mcuC_mr.drc
-PRECHECK_REPO=https://raw.githubusercontent.com/efabless/mpw_precheck/main/checks/tech-files/
-PRECHECK_GF_FILE=gf180mcuC_mr.drc
-PRECHECK_SKY_FILE=sky130A_mr.drc
-
-# TODO: DOWNLOAD WITH WGET, DONT HAVE IT STATIC
-if [ -d $SCRIPT_DIR/iic-spice-model-red.py ]; then
-    echo File iic-spice-model.red.py not found
-    return -1
-fi
-
-sudo aur-install wget
-
 function sky130_patch_reduced_models() {
     cd "$PDK_ROOT/sky130A/libs.tech/ngspice" || exit 1
     "$SCRIPT_DIR/iic-spice-model-red.py" sky130.lib.spice tt
@@ -68,6 +51,16 @@ function sky130_patch() {
     # sky130_patch_klayout_pcells       # TODO: Before fixing lym, this explodes
     sky130_patch_klayout_precheck_drc
 }
+
+source ./global-variables.sh
+
+# TODO: DOWNLOAD WITH WGET, DONT HAVE IT STATIC
+if [ -d $SCRIPT_DIR/iic-spice-model-red.py ]; then
+    echo File iic-spice-model.red.py not found
+    return -1
+fi
+
+sudo aur-install wget
 
 sky130_patch
 

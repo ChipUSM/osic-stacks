@@ -2,8 +2,7 @@
 
 set -ex
 
-export OPEN_PDKS_VERSION="e0f692f46654d6c7c99fc70a0c94a080dab53571"
-export SCRIPT_DIR=$PWD
+source ./global-variables.sh
 
 #pip install git+https://github.com/gdsfactory/skywater130.git git+https://github.com/gdsfactory/gf180.git --upgrade --break-system-packages
 # pip install gf180 --upgrade --break-system-packages
