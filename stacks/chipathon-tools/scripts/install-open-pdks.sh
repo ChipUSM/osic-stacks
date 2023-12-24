@@ -13,7 +13,7 @@ pip install gdsfactory[cad]==7.3.0 --break-system-packages
 # INSTALL GF180MCU PDK
 ######################
 
-volare enable "${OPEN_PDKS_VERSION}" --pdk gf180mcu
+volare enable "${OPEN_PDKS_COMMIT}" --pdk gf180mcu
 
 rm -rf $PDK_ROOT/volare/gf180mcu/versions/*/gf180mcuA
 rm -rf $PDK_ROOT/volare/gf180mcu/versions/*/gf180mcuB
@@ -26,7 +26,7 @@ rm -rf $PDK_ROOT/gf180mcuC
 # INSTALL SKY130 PDK
 ####################
 
-volare enable "${OPEN_PDKS_VERSION}" --pdk sky130
+volare enable "${OPEN_PDKS_COMMIT}" --pdk sky130
 
 # remove version sky130B to save space (efabless TO use mostly sky130A)
 rm -rf "$PDK_ROOT"/volare/sky130/versions/*/sky130B
