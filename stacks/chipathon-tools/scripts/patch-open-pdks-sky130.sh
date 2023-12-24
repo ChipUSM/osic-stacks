@@ -60,8 +60,4 @@ if [ -d $SCRIPT_DIR/iic-spice-model-red.py ]; then
     return -1
 fi
 
-sudo aur-install wget
-
 sky130_patch
-
-sudo aur-install gedit xterm gvim

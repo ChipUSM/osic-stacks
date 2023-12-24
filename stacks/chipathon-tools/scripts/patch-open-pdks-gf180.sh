@@ -1,12 +1,6 @@
 #!/bin/bash
 set -ex
 
-function _arch_setup() {
-    sudo aur-install wget gedit xterm gvim
-    pip install docopt --upgrade --break-system-packages
-}
-
-
 function _gf180mcuD_clean_install() {
     # Re-installs gf180mcuD
 
@@ -170,5 +164,5 @@ function gf180_patch() {
 source ./global-variables.sh
 
 #_gf180mcuD_clean_install
-_arch_setup
+pip install docopt --upgrade --break-system-packages
 gf180_patch
