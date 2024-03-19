@@ -25,7 +25,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKER_USERNAME }}/osicstacks-base-desktop
           platforms: linux/amd64
           context: .
           file: ./base/desktop.Dockerfile
@@ -34,8 +34,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKER_USERNAME }}/osicstacks-base-web
           platforms: linux/amd64
           context: .
           file: ./base/web.Dockerfile
@@ -63,8 +63,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-xk-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKER_USERNAME }}/analog-xk-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-xk.Dockerfile
@@ -73,8 +73,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-xk-web
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKER_USERNAME }}/analog-xk-web
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-xk.Dockerfile
@@ -99,8 +99,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-xm-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKER_USERNAME }}/analog-xm-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-xm.Dockerfile
@@ -109,8 +109,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-xm-web
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKER_USERNAME }}/analog-xm-web
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-xm.Dockerfile
@@ -136,8 +136,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-heavy-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKER_USERNAME }}/analog-heavy-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-heavy.Dockerfile
@@ -146,8 +146,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-heavy-web
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKER_USERNAME }}/analog-heavy-web
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-heavy.Dockerfile    
@@ -173,8 +173,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-ator-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKER_USERNAME }}/digital-ator-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-ator.Dockerfile
@@ -183,8 +183,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-ator-web
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKER_USERNAME }}/digital-ator-web
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-ator.Dockerfile
@@ -210,8 +210,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-icarus-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKER_USERNAME }}/digital-icarus-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-icarus.Dockerfile
@@ -220,8 +220,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-icarus-web
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKER_USERNAME }}/digital-icarus-web
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-icarus.Dockerfile
@@ -247,8 +247,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-heavy-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKER_USERNAME }}/digital-heavy-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-heavy.Dockerfile
@@ -257,8 +257,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-heavy-web
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKER_USERNAME }}/digital-heavy-web
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-heavy.Dockerfile
@@ -284,8 +284,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/heavy-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKER_USERNAME }}/heavy-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/heavy.Dockerfile
@@ -294,8 +294,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/heavy-web
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKER_USERNAME }}/heavy-web
           platforms: linux/amd64
           context: .
           file: ./stacks/heavy.Dockerfile
@@ -321,8 +321,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/heavy-desktop
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chipathon-tools-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/heavy-desktop
+          tags: ${{ secrets.DOCKER_USERNAME }}/chipathon-tools-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/chipathon-tools/Dockerfile
@@ -331,8 +331,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/heavy-web
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chipathon-tools-web
+          build-args: BASE_IMG=${{ secrets.DOCKER_USERNAME }}/heavy-web
+          tags: ${{ secrets.DOCKER_USERNAME }}/chipathon-tools-web
           platforms: linux/amd64
           context: .
           file: ./stacks/chipathon-tools/Dockerfile
