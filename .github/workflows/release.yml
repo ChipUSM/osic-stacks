@@ -6,9 +6,7 @@ on:
 
 jobs:
   build-base:
-    runs-on: [ubuntu-latest, amd64]
-    container:
-      image: catthehacker/ubuntu:act-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -19,7 +17,6 @@ jobs:
       - name: Authentication
         uses: docker/login-action@v2
         with:
-          registry: git.1159.cl
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -27,7 +24,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: git.1159.cl/mario1159/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
           platforms: linux/amd64
           context: .
           file: ./base/desktop.Dockerfile
@@ -36,15 +33,15 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
-          tags: git.1159.cl/mario1159/osicstacks-base-web
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
           platforms: linux/amd64
           context: .
           file: ./base/web.Dockerfile
 
   build-analog-xk:
     needs: build-base
-    runs-on: [ubuntu-latest, amd64]
+    runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest
     steps:
@@ -65,8 +62,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
-          tags: git.1159.cl/mario1159/analog-xk-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-xk-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-xk.Dockerfile
@@ -75,15 +72,15 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
-          tags: git.1159.cl/mario1159/analog-xk-web
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-xk-web
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-xk.Dockerfile
 
   build-analog-xm:
     needs: build-base
-    runs-on: [ubuntu-latest, amd64]
+    runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest
     steps:
@@ -103,8 +100,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
-          tags: git.1159.cl/mario1159/analog-xm-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-xm-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-xm.Dockerfile
@@ -113,15 +110,15 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
-          tags: git.1159.cl/mario1159/analog-xm-web
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-xm-web
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-xm.Dockerfile
 
   build-analog-heavy:
     needs: build-base
-    runs-on: [ubuntu-latest, amd64]
+    runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest
     steps:
@@ -142,8 +139,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
-          tags: git.1159.cl/mario1159/analog-heavy-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-heavy-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-heavy.Dockerfile
@@ -152,15 +149,15 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
-          tags: git.1159.cl/mario1159/analog-heavy-web
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/analog-heavy-web
           platforms: linux/amd64
           context: .
           file: ./stacks/analog-heavy.Dockerfile    
 
   build-digital-ator:
     needs: build-base
-    runs-on: [ubuntu-latest, amd64]
+    runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest
     steps:
@@ -181,8 +178,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
-          tags: git.1159.cl/mario1159/digital-ator-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-ator-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-ator.Dockerfile
@@ -191,15 +188,15 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
-          tags: git.1159.cl/mario1159/digital-ator-web
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-ator-web
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-ator.Dockerfile
 
   build-digital-icarus:
     needs: build-base
-    runs-on: [ubuntu-latest, amd64]
+    runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest
     steps:
@@ -220,8 +217,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
-          tags: git.1159.cl/mario1159/digital-icarus-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-icarus-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-icarus.Dockerfile
@@ -230,15 +227,15 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
-          tags: git.1159.cl/mario1159/digital-icarus-web
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-icarus-web
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-icarus.Dockerfile
 
   build-digital-heavy:
     needs: build-base
-    runs-on: [ubuntu-latest, amd64]
+    runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest
     steps:
@@ -259,8 +256,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
-          tags: git.1159.cl/mario1159/digital-heavy-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-heavy-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-heavy.Dockerfile
@@ -269,15 +266,15 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
-          tags: git.1159.cl/mario1159/digital-heavy-web
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/digital-heavy-web
           platforms: linux/amd64
           context: .
           file: ./stacks/digital-heavy.Dockerfile
 
   build-heavy:
     needs: build-base
-    runs-on: [ubuntu-latest, amd64]
+    runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest
     steps:
@@ -298,8 +295,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-desktop
-          tags: git.1159.cl/mario1159/heavy-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-desktop
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/heavy-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/heavy.Dockerfile
@@ -308,15 +305,15 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/osicstacks-base-web
-          tags: git.1159.cl/mario1159/heavy-web
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/osicstacks-base-web
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/heavy-web
           platforms: linux/amd64
           context: .
           file: ./stacks/heavy.Dockerfile
 
   build-chipathon-tools:
     needs: build-heavy
-    runs-on: [ubuntu-latest, amd64]
+    runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest
     steps:
@@ -337,8 +334,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/heavy-desktop
-          tags: git.1159.cl/mario1159/chipathon-tools-desktop
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/heavy-desktop
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chipathon-tools-desktop
           platforms: linux/amd64
           context: .
           file: ./stacks/chipathon-tools/Dockerfile
@@ -347,8 +344,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: BASE_IMG=git.1159.cl/mario1159/heavy-web
-          tags: git.1159.cl/mario1159/chipathon-tools-web
+          build-args: BASE_IMG=${{ secrets.DOCKERHUB_USERNAME }}/heavy-web
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chipathon-tools-web
           platforms: linux/amd64
           context: .
           file: ./stacks/chipathon-tools/Dockerfile
